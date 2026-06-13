@@ -21,13 +21,13 @@ export interface LoginPageOptions {
 
 const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; width: auto;" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z" fill="#fff"/>
-    <path d="M505.047,116.572v-58.509h9.816v59.315c0,14.396,11.686,23.381,35.291,23.381,19.281,0,33.888-8.178,33.888-23.266v-59.43h9.816v59.315c0,21.076-17.295,32.364-44.055,32.364-26.527,0-44.757-10.136-44.757-33.17Z" fill="#fff"/>
-    <path d="M658.763,148.475h-9.816V58.063h56.443c13.205,0,20.802,4.377,24.656,11.173,1.987,3.57,3.156,7.831,3.156,13.705,0,5.644-.935,10.481-2.804,13.706-3.04,5.413-8.998,9.213-15.776,9.79l27.812,42.039h-11.92l-26.293-40.426h-21.652l-5.011-8.868h29.234c7.595,0,12.504-2.303,14.608-6.565,1.167-2.303,1.751-5.759,1.751-8.868,0-3.571-.584-7.256-1.751-9.328-2.572-4.723-8.063-7.256-17.414-7.256h-45.224v81.313Z" fill="#fff"/>
-    <path d="M789.89,58.063h10.051v90.412h-10.051V58.063Z" fill="#fff"/>
-    <path d="M884.202,102.405l-40.901-44.342h12.62l34.357,37.087,35.407-37.087h12.038l-41.719,43.767,42.77,46.645h-12.62l-36.226-39.389-37.745,39.389h-12.038l44.057-46.07Z" fill="#fff"/>
+    <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z" fill="currentColor"/>
+    <path d="M505.047,116.572v-58.509h9.816v59.315c0,14.396,11.686,23.381,35.291,23.381,19.281,0,33.888-8.178,33.888-23.266v-59.43h9.816v59.315c0,21.076-17.295,32.364-44.055,32.364-26.527,0-44.757-10.136-44.757-33.17Z" fill="currentColor"/>
+    <path d="M658.763,148.475h-9.816V58.063h56.443c13.205,0,20.802,4.377,24.656,11.173,1.987,3.57,3.156,7.831,3.156,13.705,0,5.644-.935,10.481-2.804,13.706-3.04,5.413-8.998,9.213-15.776,9.79l27.812,42.039h-11.92l-26.293-40.426h-21.652l-5.011-8.868h29.234c7.595,0,12.504-2.303,14.608-6.565,1.167-2.303,1.751-5.759,1.751-8.868,0-3.571-.584-7.256-1.751-9.328-2.572-4.723-8.063-7.256-17.414-7.256h-45.224v81.313Z" fill="currentColor"/>
+    <path d="M789.89,58.063h10.051v90.412h-10.051V58.063Z" fill="currentColor"/>
+    <path d="M884.202,102.405l-40.901-44.342h12.62l34.357,37.087,35.407-37.087h12.038l-41.719,43.767,42.77,46.645h-12.62l-36.226-39.389-37.745,39.389h-12.038l44.057-46.07Z" fill="currentColor"/>
   </g>
-  <path d="M312.112,152.829l-125.516-114.769-125.37,114.965,3.529,4.915c17.295-10.472,36.182-18.512,56.192-23.899,20.397-5.492,42.098-8.277,64.499-8.277,45.159,0,88.738,11.358,123.106,32.025l3.561-4.959ZM186.601,45.573l80.599,73.698c-12.717-9.665-26.21-19.774-38.636-28.631-30.51-21.746-38.659-24.535-42.351-24.535s-11.739,2.763-41.699,24.305c-11.803,8.487-24.626,18.169-36.798,27.5l78.883-72.337ZM147.751,94.909c28.149-20.241,36.181-23.263,38.464-23.263,2.299,0,10.44,3.054,39.134,23.506,13.704,9.768,28.737,21.084,42.58,31.637-29.526-16.845-63.311-33.625-82.099-33.625-18.505,0-51.113,16.427-79.806,33.036,13.598-10.464,28.331-21.658,41.727-31.29ZM119.506,128.69c-4.74,1.276-9.414,2.706-14.026,4.269,28.621-16.723,62.503-34.254,80.35-34.254,18.06,0,52.858,17.689,82.259,34.598-25.679-8.546-53.856-13.081-82.644-13.081-22.887,0-45.073,2.849-65.939,8.467Z" fill="#fff"/>
+  <path d="M312.112,152.829l-125.516-114.769-125.37,114.965,3.529,4.915c17.295-10.472,36.182-18.512,56.192-23.899,20.397-5.492,42.098-8.277,64.499-8.277,45.159,0,88.738,11.358,123.106,32.025l3.561-4.959ZM186.601,45.573l80.599,73.698c-12.717-9.665-26.21-19.774-38.636-28.631-30.51-21.746-38.659-24.535-42.351-24.535s-11.739,2.763-41.699,24.305c-11.803,8.487-24.626,18.169-36.798,27.5l78.883-72.337ZM147.751,94.909c28.149-20.241,36.181-23.263,38.464-23.263,2.299,0,10.44,3.054,39.134,23.506,13.704,9.768,28.737,21.084,42.58,31.637-29.526-16.845-63.311-33.625-82.099-33.625-18.505,0-51.113,16.427-79.806,33.036,13.598-10.464,28.331-21.658,41.727-31.29ZM119.506,128.69c-4.74,1.276-9.414,2.706-14.026,4.269,28.621-16.723,62.503-34.254,80.35-34.254,18.06,0,52.858,17.689,82.259,34.598-25.679-8.546-53.856-13.081-82.644-13.081-22.887,0-45.073,2.849-65.939,8.467Z" fill="currentColor"/>
 </svg>`;
 
 export const LoginPage: React.FC<LoginPageOptions> = ({
@@ -55,6 +55,23 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{`${title} | ${brandName}`}</title>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var theme = localStorage.getItem('theme') || 'dark';
+            if (theme === 'system') {
+              var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              if (systemDark) {
+                document.documentElement.classList.remove('light');
+              } else {
+                document.documentElement.classList.add('light');
+              }
+            } else if (theme === 'light') {
+              document.documentElement.classList.add('light');
+            } else {
+              document.documentElement.classList.remove('light');
+            }
+          })();
+        ` }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -67,6 +84,80 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
             --text-white: #f8fafc;
             --text-muted: #94a3b8;
             --border-slate: #334155;
+            --card-bg: rgba(15, 23, 42, 0.45);
+            --input-bg: rgba(2, 6, 23, 0.8);
+          }
+          
+          html.light {
+            --bg-slate-900: #f1f5f9;
+            --bg-slate-950: #f8fafc;
+            --text-white: #0f172a;
+            --text-muted: #64748b;
+            --border-slate: #cbd5e1;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --input-bg: rgba(255, 255, 255, 0.9);
+          }
+          
+          .logo-svg path, .logo-svg g {
+            fill: var(--text-white);
+          }
+          
+          .password-input-wrapper {
+            position: relative;
+            width: 100%;
+          }
+          
+          .password-toggle-btn {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+            transition: color 0.15s ease;
+          }
+          
+          .password-toggle-btn:hover {
+            color: var(--text-white);
+          }
+          
+          .eye-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          
+          .theme-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+          }
+          
+          .theme-toggle-btn:hover {
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.05);
+          }
+          
+          .theme-toggle-btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          
+          .hidden {
+            display: none !important;
           }
           
           * {
@@ -167,7 +258,7 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
           }
 
           .card {
-            background: rgba(15, 23, 42, 0.45);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -263,7 +354,7 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
             padding: 0.75rem 1rem;
             border-radius: 0.5rem;
             border: 1px solid var(--border-slate);
-            background-color: rgba(2, 6, 23, 0.8);
+            background-color: var(--input-bg);
             color: var(--text-white);
             font-size: 1rem;
             transition: all 0.2s ease;
@@ -434,12 +525,16 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
       <body>
         <div className="bg-container"></div>
         
-        <header>
+        <header style={{ justifyContent: 'space-between' }}>
           {logo && typeof logo === 'string' ? (
-            <div className="logo-container" dangerouslySetInnerHTML={{ __html: logo }} />
+            <div className="logo-container" dangerouslySetInnerHTML={{ __html: logo }} style={{ color: 'var(--text-white)' }} />
           ) : (
-            <div className="logo-container">{logo}</div>
+            <div className="logo-container" style={{ color: 'var(--text-white)' }}>{logo}</div>
           )}
+          <button type="button" className="theme-toggle-btn" id="theme-toggle-btn" title="Toggle theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sun-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="moon-icon hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
         </header>
 
         <main>
@@ -465,7 +560,13 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
                     
                     <div className="form-group">
                       <label htmlFor="password" className="form-label">Password</label>
-                      <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required />
+                      <div className="password-input-wrapper">
+                        <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required style={{ paddingRight: '2.75rem' }} />
+                        <button type="button" className="password-toggle-btn" title="Toggle password visibility">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="eye-icon eye-open"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="eye-icon eye-closed hidden"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+                        </button>
+                      </div>
                       <div className="trouble-link-container">
                         <a href="/login/reset-password" className="text-link">Trouble logging in?</a>
                       </div>
@@ -491,7 +592,13 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
                   
                   <div className="form-group">
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required />
+                    <div className="password-input-wrapper">
+                      <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required style={{ paddingRight: '2.75rem' }} />
+                      <button type="button" className="password-toggle-btn" title="Toggle password visibility">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="eye-icon eye-open"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="eye-icon eye-closed hidden"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+                      </button>
+                    </div>
                     <div className="trouble-link-container">
                       <a href="/login/reset-password" className="text-link">Trouble logging in?</a>
                     </div>
@@ -549,6 +656,56 @@ export const LoginPage: React.FC<LoginPageOptions> = ({
 
         <script dangerouslySetInnerHTML={{ __html: `
           (function () {
+            // Theme toggle initialization and click handler
+            var themeToggleBtn = document.getElementById('theme-toggle-btn');
+            if (themeToggleBtn) {
+              var sunIcon = themeToggleBtn.querySelector('.sun-icon');
+              var moonIcon = themeToggleBtn.querySelector('.moon-icon');
+              
+              function updateThemeButton(theme) {
+                if (theme === 'light') {
+                  sunIcon.classList.add('hidden');
+                  moonIcon.classList.remove('hidden');
+                } else {
+                  sunIcon.classList.remove('hidden');
+                  moonIcon.classList.add('hidden');
+                }
+              }
+
+              var currentTheme = localStorage.getItem('theme') || 'dark';
+              updateThemeButton(currentTheme);
+
+              themeToggleBtn.addEventListener('click', function() {
+                var theme = localStorage.getItem('theme') || 'dark';
+                var nextTheme = theme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', nextTheme);
+                if (nextTheme === 'light') {
+                  document.documentElement.classList.add('light');
+                } else {
+                  document.documentElement.classList.remove('light');
+                }
+                updateThemeButton(nextTheme);
+              });
+            }
+
+            // Password visibility toggle
+            var toggleBtns = document.querySelectorAll('.password-toggle-btn');
+            toggleBtns.forEach(function (btn) {
+              btn.addEventListener('click', function () {
+                var input = btn.previousElementSibling;
+                var eyeOpen = btn.querySelector('.eye-open');
+                var eyeClosed = btn.querySelector('.eye-closed');
+                if (input.type === 'password') {
+                  input.type = 'text';
+                  eyeOpen.classList.add('hidden');
+                  eyeClosed.classList.remove('hidden');
+                } else {
+                  input.type = 'password';
+                  eyeOpen.classList.remove('hidden');
+                  eyeClosed.classList.add('hidden');
+                }
+              });
+            });
             var errorAlert = document.getElementById('error-alert');
             var form = document.getElementById('login-form');
             var submitBtn = document.getElementById('submit-btn');

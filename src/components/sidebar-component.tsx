@@ -17,7 +17,7 @@ export interface SidebarRenderOptions {
 }
 
 const DEFAULT_LOGO = `<svg viewBox="0 0 1000 201" style="height: 24px; width: auto;" class="sidebar-logo-svg" xmlns="http://www.w3.org/2000/svg">
-  <g fill="#fff">
+  <g fill="currentColor">
     <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z"/>
     <path d="M505.047,116.572v-58.509h9.816v59.315c0,14.396,11.686,23.381,35.291,23.381,19.281,0,33.888-8.178,33.888-23.266v-59.43h9.816v59.315c0,21.076-17.295,32.364-44.055,32.364-26.527,0-44.757-10.136-44.757-33.17Z"/>
     <path d="M658.763,148.475h-9.816V58.063h56.443c13.205,0,20.802,4.377,24.656,11.173,1.987,3.57,3.156,7.831,3.156,13.705,0,5.644-.935,10.481-2.804,13.706-3.04,5.413-8.998,9.213-15.776,9.79l27.812,42.039h-11.92l-26.293-40.426h-21.652l-5.011-8.868h29.234c7.595,0,12.504-2.303,14.608-6.565,1.167-2.303,1.751-5.759,1.751-8.868,0-3.571-.584-7.256-1.751-9.328-2.572-4.723-8.063-7.256-17.414-7.256h-45.224v81.313Z"/>
@@ -70,6 +70,23 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{`${brandName} Dashboard`}</title>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var theme = localStorage.getItem('theme') || 'dark';
+            if (theme === 'system') {
+              var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              if (systemDark) {
+                document.documentElement.classList.remove('light');
+              } else {
+                document.documentElement.classList.add('light');
+              }
+            } else if (theme === 'light') {
+              document.documentElement.classList.add('light');
+            } else {
+              document.documentElement.classList.remove('light');
+            }
+          })();
+        ` }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -86,6 +103,70 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
             --border-slate: #334155;
             --sidebar-width-expanded: 260px;
             --sidebar-width-collapsed: 70px;
+          }
+
+          html.light {
+            --bg-slate-900: #f1f5f9;
+            --bg-slate-950: #f8fafc;
+            --sidebar-bg: rgba(241, 245, 249, 0.85);
+            --sidebar-border: rgba(15, 23, 42, 0.08);
+            --text-white: #0f172a;
+            --text-muted: #64748b;
+            --border-slate: #cbd5e1;
+          }
+
+          .sidebar-logo-svg path, .sidebar-logo-svg g {
+            fill: var(--text-white);
+          }
+
+          .theme-switcher-section {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+          .theme-switcher-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+          .theme-switcher-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 2px;
+            border: 1px solid var(--sidebar-border);
+          }
+          .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.375rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+          }
+          .theme-btn:hover {
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.03);
+          }
+          .theme-btn.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(81, 47, 255, 0.2);
+          }
+          .theme-icon {
+            width: 1rem;
+            height: 1rem;
           }
 
           * {
@@ -174,6 +255,7 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
             overflow: hidden;
             white-space: nowrap;
             transition: opacity 0.2s ease;
+            color: var(--text-white);
           }
 
           .sidebar.collapsed .sidebar-logo-container {
@@ -733,6 +815,20 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
                 ))}
               </>
             )}
+
+            <div className="sidebar-group" style={{ marginTop: 'auto' }}>
+              <ul className="sidebar-menu">
+                <li className="sidebar-menu-item">
+                  <button type="button" className="sidebar-menu-link" id="sidebar-menu-theme-toggle" style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}>
+                    <div className="theme-toggle-icon-container" style={{ display: 'contents' }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-icon sun-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-icon moon-icon hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </div>
+                    <span className="sidebar-link-text" id="sidebar-theme-text">Theme: Dark</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div className="sidebar-footer">
@@ -752,6 +848,22 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
                 <div className="user-popup-title">{user.displayName}</div>
                 <div className="user-popup-subtitle">{user.email}</div>
               </div>
+              
+              <div className="theme-switcher-section">
+                <div className="theme-switcher-label">Theme</div>
+                <div className="theme-switcher-buttons">
+                  <button type="button" className="theme-btn" data-theme="light" id="theme-btn-light" title="Light Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                  </button>
+                  <button type="button" className="theme-btn" data-theme="dark" id="theme-btn-dark" title="Dark Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="theme-icon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                  </button>
+                  <button type="button" className="theme-btn" data-theme="system" id="theme-btn-system" title="System Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="theme-icon"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  </button>
+                </div>
+              </div>
+
               <button type="button" className="user-popup-item" id="logout-btn">
                 <div dangerouslySetInnerHTML={{ __html: ICONS.logout }} style={{ display: 'contents' }} />
                 <span>Log out</span>
@@ -788,6 +900,90 @@ export const SidebarLayout: React.FC<SidebarRenderOptions> = ({
 
             var tokenStorageKey = ${JSON.stringify(tokenStorageKey)};
             var logoutApiPath = ${JSON.stringify(logoutApiPath)};
+
+            // Theme selection click handlers
+            var themeBtnLight = document.getElementById('theme-btn-light');
+            var themeBtnDark = document.getElementById('theme-btn-dark');
+            var themeBtnSystem = document.getElementById('theme-btn-system');
+            
+            function applyTheme(theme) {
+              if (theme === 'system') {
+                var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (systemDark) {
+                  document.documentElement.classList.remove('light');
+                } else {
+                  document.documentElement.classList.add('light');
+                }
+              } else if (theme === 'light') {
+                document.documentElement.classList.add('light');
+              } else {
+                document.documentElement.classList.remove('light');
+              }
+            }
+
+            var sidebarThemeToggle = document.getElementById('sidebar-menu-theme-toggle');
+            var sidebarThemeText = document.getElementById('sidebar-theme-text');
+
+            function updateActiveThemeButton(theme) {
+              [themeBtnLight, themeBtnDark, themeBtnSystem].forEach(function(btn) {
+                if (btn) btn.classList.remove('active');
+              });
+              if (theme === 'light' && themeBtnLight) themeBtnLight.classList.add('active');
+              else if (theme === 'dark' && themeBtnDark) themeBtnDark.classList.add('active');
+              else if (theme === 'system' && themeBtnSystem) themeBtnSystem.classList.add('active');
+              
+              if (sidebarThemeToggle) {
+                var sunIcon = sidebarThemeToggle.querySelector('.sun-icon');
+                var moonIcon = sidebarThemeToggle.querySelector('.moon-icon');
+                if (theme === 'light') {
+                  sunIcon.classList.add('hidden');
+                  moonIcon.classList.remove('hidden');
+                  if (sidebarThemeText) sidebarThemeText.textContent = 'Theme: Light';
+                } else if (theme === 'dark') {
+                  sunIcon.classList.remove('hidden');
+                  moonIcon.classList.add('hidden');
+                  if (sidebarThemeText) sidebarThemeText.textContent = 'Theme: Dark';
+                } else {
+                  var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (systemDark) {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                  } else {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                  }
+                  if (sidebarThemeText) sidebarThemeText.textContent = 'Theme: System';
+                }
+              }
+            }
+
+            var currentTheme = localStorage.getItem('theme') || 'dark';
+            updateActiveThemeButton(currentTheme);
+
+            function handleThemeClick(theme) {
+              localStorage.setItem('theme', theme);
+              applyTheme(theme);
+              updateActiveThemeButton(theme);
+            }
+
+            if (themeBtnLight) themeBtnLight.addEventListener('click', function() { handleThemeClick('light'); });
+            if (themeBtnDark) themeBtnDark.addEventListener('click', function() { handleThemeClick('dark'); });
+            if (themeBtnSystem) themeBtnSystem.addEventListener('click', function() { handleThemeClick('system'); });
+
+            if (sidebarThemeToggle) {
+              sidebarThemeToggle.addEventListener('click', function() {
+                var theme = localStorage.getItem('theme') || 'dark';
+                var nextTheme = theme === 'dark' ? 'light' : 'dark';
+                handleThemeClick(nextTheme);
+              });
+            }
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+              var theme = localStorage.getItem('theme') || 'dark';
+              if (theme === 'system') {
+                applyTheme('system');
+              }
+            });
 
             if (toggleBtn) {
               toggleBtn.addEventListener('click', function () {
