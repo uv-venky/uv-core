@@ -3,6 +3,8 @@ import { withAuthRoute, withPublicRoute } from '../common/routes.js';
 import { login } from './login.service.js';
 import { logout } from './logout.service.js';
 import { renderLoginPage, type LoginPageOptions } from '../../components/login-page.js';
+import { renderResetPasswordPage, type ResetPasswordPageOptions } from '../../components/reset-password-page.js';
+import { renderNewPasswordPage, type NewPasswordPageOptions } from '../../components/new-password-page.js';
 import type { LoginInput } from './types.js';
 
 export interface AuthRoutesOptions {
@@ -11,6 +13,10 @@ export interface AuthRoutesOptions {
   profilePath?: string;
   loginPagePath?: string;
   loginPage?: LoginPageOptions | false;
+  resetPasswordPagePath?: string;
+  resetPasswordPage?: ResetPasswordPageOptions | false;
+  newPasswordPagePath?: string;
+  newPasswordPage?: NewPasswordPageOptions | false;
 }
 
 type RouteHandler = (req: Request) => Promise<Response>;
@@ -45,11 +51,31 @@ export function createLoginPageRoute(options: LoginPageOptions = {}): RouteHandl
   });
 }
 
+export function createResetPasswordPageRoute(options: ResetPasswordPageOptions = {}): RouteHandler {
+  const html = renderResetPasswordPage(options);
+  return withPublicRoute(async () => {
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  });
+}
+
+export function createNewPasswordPageRoute(options: NewPasswordPageOptions = {}): RouteHandler {
+  const html = renderNewPasswordPage(options);
+  return withPublicRoute(async () => {
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  });
+}
+
 export function createAuthRoutes(options: AuthRoutesOptions = {}): Record<string, RouteHandler> {
   const loginPath = options.loginPath ?? '/api/auth/login';
   const logoutPath = options.logoutPath ?? '/api/auth/logout';
   const profilePath = options.profilePath ?? '/api/profile';
   const loginPagePath = options.loginPagePath ?? '/login';
+  const resetPasswordPagePath = options.resetPasswordPagePath ?? '/login/reset-password';
+  const newPasswordPagePath = options.newPasswordPagePath ?? '/login/reset-password/change';
 
   const routes: Record<string, RouteHandler> = {
     [`POST ${loginPath}`]: createLoginRoute(),
@@ -59,6 +85,14 @@ export function createAuthRoutes(options: AuthRoutesOptions = {}): Record<string
 
   if (options.loginPage !== false) {
     routes[`GET ${loginPagePath}`] = createLoginPageRoute(options.loginPage ?? {});
+  }
+
+  if (options.resetPasswordPage !== false) {
+    routes[`GET ${resetPasswordPagePath}`] = createResetPasswordPageRoute(options.resetPasswordPage ?? {});
+  }
+
+  if (options.newPasswordPage !== false) {
+    routes[`GET ${newPasswordPagePath}`] = createNewPasswordPageRoute(options.newPasswordPage ?? {});
   }
 
   return routes;
