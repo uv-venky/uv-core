@@ -1,0 +1,9 @@
+appId: 'core'
+dbUrl: ''
+secret: ''
+jwtExpiresIn: '1h'
+migrationsDir: './migrations'
+init:
+  admin:
+    email: 'admin@example.com'
+    password: 'changeme'
