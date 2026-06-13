@@ -1,6 +1,6 @@
 {
   "name": "uv-core",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "UV Core - reusable Node.js/TypeScript framework with PostgreSQL, JWT auth, and migrations",
   "type": "module",
   "main": "./dist/index.js",
@@ -35,8 +35,7 @@
     "rollback": "tsx scripts/rollback.ts",
     "migration:create": "tsx scripts/create-migration.ts",
     "example": "tsx examples/sample-app/src/server.ts",
-    "prepublishOnly": "npm run build",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "typescript",
