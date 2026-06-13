@@ -1,6 +1,6 @@
 {
   "name": "uv-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "UV Core - reusable Node.js/TypeScript framework with PostgreSQL, JWT auth, and migrations",
   "type": "module",
   "main": "./dist/index.js",

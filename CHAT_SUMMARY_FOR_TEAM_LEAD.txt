@@ -1,0 +1,517 @@
+================================================================================
+UV-CORE (formerly base-framework) — DETAILED SUMMARY OF WORK DONE IN CHAT
+================================================================================
+NOTE: The framework now lives in c:\work\uv-core (package name: uv-core).
+      c:\work\base-framework is superseded — use uv-core going forward.
+Related consumer example: c:\work\repo1
+Reference implementation studied: c:\work\core (GitHub-hosted repo1/core)
+
+================================================================================
+1. ORIGINAL REQUEST
+================================================================================
+
+The user asked to build a lightweight, reusable Node.js/TypeScript framework
+package named "base-framework" that can be installed and used across multiple
+repositories.
+
+Required capabilities:
+  - Node.js + TypeScript
+  - PostgreSQL connection pooling
+  - JWT authentication
+  - bcrypt password hashing
+  - SQL migration system (run, rollback, create)
+  - Structured logging (request, error, database query)
+  - Environment/YAML-based configuration
+  - Sample login API and protected API
+  - Package export configuration
+  - Example showing how another repo can consume the framework
+
+The user also asked to mirror concepts from the existing "core" repository
+(same patterns used in repo1/core on GitHub), while keeping the framework
+generic with no company-specific business logic.
+
+================================================================================
+2. WHAT WAS CREATED (FROM SCRATCH)
+================================================================================
+
+Both base-framework and repo1 started empty in this workspace. Everything below
+was implemented new.
+
+2.1 MAIN PACKAGE: base-framework
+--------------------------------
+Location: c:\work\base-framework
+
+Folder structure delivered:
+
+  base-framework/
+  ├── config/
+  │   ├── default.yml          # Default configuration values
+  │   └── env.yml              # Env var substitution map (like core)
+  ├── migrations/
+  │   ├── 202406010001_init.sql
+  │   ├── 202406010001_init.down.sql
+  │   ├── 202406020001_add_user_profile.sql
+  │   └── 202406020001_add_user_profile.down.sql
+  ├── scripts/
+  │   ├── migrate.ts           # npm run migrate
+  │   ├── rollback.ts          # npm run rollback
+  │   └── create-migration.ts  # npm run migration:create
+  ├── examples/
+  │   └── sample-app/
+  │       └── src/server.ts    # Sample login + protected routes
+  ├── src/
+  │   ├── auth/
+  │   │   ├── login.service.ts
+  │   │   ├── logout.service.ts
+  │   │   ├── auth.middleware.ts
+  │   │   ├── jwt.service.ts
+  │   │   ├── types.ts
+  │   │   └── index.ts
+  │   ├── database/
+  │   │   ├── postgres.ts
+  │   │   └── index.ts
+  │   ├── migrations/
+  │   │   ├── migration-runner.ts
+  │   │   ├── migration-generator.ts
+  │   │   └── index.ts
+  │   ├── common/
+  │   │   ├── logger.ts
+  │   │   ├── constants.ts
+  │   │   ├── config.ts
+  │   │   ├── exceptions.ts
+  │   │   ├── utils.ts
+  │   │   ├── http.ts
+  │   │   ├── routes.ts
+  │   │   ├── error-response.ts
+  │   │   └── fetch-server.ts
+  │   └── index.ts
+  ├── package.json
+  ├── tsconfig.json
+  ├── .env.example
+  ├── .gitignore
+  └── README.md
+
+2.2 CONSUMER EXAMPLE: repo1
+---------------------------
+Location: c:\work\repo1
+
+A minimal second repository showing how to install base-framework locally:
+
+  repo1/
+  ├── config/          (copied from base-framework)
+  ├── migrations/      (copied from base-framework)
+  ├── src/server.ts    (thin app using base-framework)
+  ├── package.json     ("base-framework": "file:../base-framework")
+  ├── .env.example
+  └── README.md
+
+================================================================================
+3. ALIGNMENT WITH CORE REPOSITORY
+================================================================================
+
+The "core" repo (c:\work\core) was studied in detail. Key patterns copied:
+
+3.1 DATABASE MODULE (core: src/lib/core/server/db.ts)
+  - PostgreSQL connection pool via "pg"
+  - Singleton pool pattern (globalThis.__baseFrameworkPool)
+  - executeQuery(), execute(), transaction() helpers
+  - Query duration logging
+  - SSL configuration via PG_SSL_* env vars
+  - Numeric type parsers for INT/NUMERIC columns
+
+3.2 MIGRATIONS (core: src/lib/core/server/run-migrations.ts)
+  - Sequential SQL file execution
+  - File naming: {version}_{name}.sql (e.g. 202406010001_init.sql)
+  - MD5 checksum validation of applied migrations
+  - Migrations tracking table with: version, name, installed_on, success,
+    checksum, execution_time
+  - Dev escape hatch: IGNORE_MIGRATION_CHECKSUM_MISMATCH=true
+  - Rollback support via companion .down.sql files (extension beyond core)
+
+3.3 CONFIGURATION (core: src/lib/core/server/config.ts)
+  - Layered YAML config loading:
+      config/default.yml
+      config/{NODE_ENV}.yml (optional)
+      config/local.yml (optional)
+      config/env.yml (substitutes env var names into config)
+  - Uses js-yaml library (same as core)
+
+3.4 LOGGING (core: src/lib/core/server/logger.ts)
+  - pino + pino-pretty
+  - AsyncLocalStorage for request context (trackId, userId, email, etc.)
+  - debug/info/warn/error levels
+  - Database query logging at debug level
+
+3.5 AUTH PASSWORD HASHING (core: src/auth.ts)
+  - bcrypt-ts (NOT the "bcrypt" npm package)
+  - genSaltSync / hashSync / compare
+  - 10 salt rounds (same as core)
+
+3.6 HTTP / ROUTE PATTERN (core: src/lib/core/server/withDBRoutes.ts)
+  - Uses Web Fetch API Request/Response (NOT Express)
+  - Route wrappers similar to core's withSessionRoute / withDBRoute:
+      withPublicRoute()
+      withAuthRoute()
+      withRoleRoute()
+  - Error responses: { status: 'ERROR', message: '...' }
+
+3.7 TABLE PREFIX (core: PREFIX = 'wv_')
+  - base-framework uses PREFIX = 'uv_'
+  - All tables prefixed accordingly (see Section 5)
+
+================================================================================
+4. TECH STACK DECISIONS & CHANGES DURING CHAT
+================================================================================
+
+4.1 INITIAL BUILD (first pass)
+  - Used Express for sample API
+  - Used "bcrypt" package
+  - Used dotenv as runtime dependency
+  - Used env-only configuration
+  - Table names without prefix, then schema_migrations
+
+4.2 USER FEEDBACK: "don't use any new tech stack which is not exists in core"
+  Changes made:
+  - REMOVED Express entirely (not in core)
+  - REPLACED bcrypt with bcrypt-ts (core standard)
+  - MOVED dotenv to devDependency (CLI scripts only, like core migrate.ts)
+  - ADDED js-yaml config system (matching core)
+  - ADDED zod for login input validation (core uses zod in auth)
+  - REPLACED Express middleware with Fetch Request/Response route wrappers
+  - ALIGNED dependency versions with core where applicable:
+      pg 8.21.0
+      jsonwebtoken 9.0.3
+      bcrypt-ts 8.0.1
+      js-yaml 4.1.1
+      zod 4.4.3
+      pino 10.3.1
+      pino-pretty 13.1.3
+      dotenv 17.4.2 (dev)
+      tsx 4.22.3
+      typescript 6.0.3
+  - Node engine set to >=24.13.0 (same as core)
+  - Renamed example from express-app to sample-app
+  - Added createFetchServer() — Node http adapter for local testing without Next.js
+
+4.3 USER FEEDBACK: "the table prefix should uv_*"
+  Changes made:
+  - Added PREFIX = 'uv_' constant (mirrors core's PREFIX = 'wv_')
+  - Renamed all tables and indexes:
+
+      uv_users
+      uv_revoked_tokens
+      uv_migrations
+
+  - Updated all SQL in:
+      - migration files (.sql and .down.sql)
+      - login.service.ts
+      - logout.service.ts
+      - migration-runner.ts
+  - Exported table constants from package index:
+      PREFIX, USERS_TABLE, REVOKED_TOKENS_TABLE, SCHEMA_MIGRATIONS_TABLE
+  - Synced repo1 migration files
+
+================================================================================
+5. DATABASE SCHEMA (FINAL)
+================================================================================
+
+5.1 uv_users
+  - id SERIAL PRIMARY KEY
+  - email VARCHAR(255) UNIQUE NOT NULL
+  - password_hash VARCHAR(255) NOT NULL
+  - display_name VARCHAR(255) NOT NULL
+  - roles TEXT[] DEFAULT '{}'
+  - is_active BOOLEAN DEFAULT TRUE
+  - last_login_at TIMESTAMPTZ
+  - created_at / updated_at TIMESTAMPTZ
+
+  Indexes (migration 202406020001):
+  - uv_users_email_idx
+  - uv_users_roles_idx (GIN on roles array)
+
+  Seeded admin user:
+  - Email: admin@example.com
+  - Password: changeme
+  - Roles: admin, user
+
+5.2 uv_revoked_tokens
+  - jti VARCHAR(64) PRIMARY KEY
+  - user_id INTEGER REFERENCES uv_users(id) ON DELETE CASCADE
+  - expires_at TIMESTAMPTZ NOT NULL
+  - revoked_at TIMESTAMPTZ NOT NULL DEFAULT now()
+
+  Index:
+  - uv_revoked_tokens_expires_at_idx
+
+  Purpose: JWT logout / token revocation tracking
+
+5.3 uv_migrations
+  - version BIGINT NOT NULL
+  - name VARCHAR(120) NOT NULL
+  - installed_on TIMESTAMPTZ DEFAULT now()
+  - success BOOLEAN NOT NULL
+  - checksum TEXT NOT NULL
+  - execution_time BIGINT NOT NULL
+  - PRIMARY KEY (version, name)
+  - Constraint name: uv_migrations_pk
+
+================================================================================
+6. AUTHENTICATION MODULE (DETAIL)
+================================================================================
+
+6.1 login.service.ts
+  - Accepts { email, password }
+  - Validates input with zod (email format, password min 5 chars)
+  - Looks up user in uv_users by normalized email
+  - Verifies password with bcrypt-ts compare()
+  - Checks is_active flag
+  - Signs JWT access token
+  - Updates last_login_at and updated_at
+  - Returns: { accessToken, tokenType: 'Bearer', expiresIn, user }
+
+6.2 jwt.service.ts
+  - hashPassword() — bcrypt-ts genSaltSync/hashSync
+  - verifyPassword() — bcrypt-ts compare
+  - signAccessToken() — jsonwebtoken.sign with config secret
+  - verifyAccessToken() — jsonwebtoken.verify
+  - JWT payload: sub, email, displayName, roles, jti
+
+6.3 logout.service.ts
+  - Inserts jti into uv_revoked_tokens on logout
+  - assertTokenNotRevoked() — checked on every authenticated request
+  - cleanupExpiredRevokedTokens() — maintenance helper
+
+6.4 auth.middleware.ts
+  - authenticateRequest(req) — extracts Bearer token, verifies JWT,
+    checks revocation, loads user from DB
+  - optionalAuthenticateRequest(req)
+  - hasRole() / assertRole()
+
+6.5 Route wrappers (common/routes.ts)
+  - withPublicRoute(handler) — logging + error handling
+  - withAuthRoute(handler) — requires valid JWT, passes auth context
+  - withRoleRoute(['admin'], handler) — role-based authorization
+
+================================================================================
+7. DATABASE MODULE (DETAIL)
+================================================================================
+
+Exported functions:
+  - getPool()
+  - getPoolStatus()
+  - newClient()
+  - executeQuery(text, params)
+  - execute(client, text, params)
+  - transaction(callback)
+  - closePool()
+  - createStandaloneClient() — used by migration CLI scripts
+
+Configuration source: getConfig().dbUrl from YAML (DATABASE_URL env var)
+
+================================================================================
+8. MIGRATIONS MODULE (DETAIL)
+================================================================================
+
+8.1 migration-runner.ts
+  - ensureMigrationsTable()
+  - listMigrationFiles()
+  - runMigrations(client, logger) — applies pending .sql files in order
+  - rollbackLastMigration(client, logger) — runs latest .down.sql
+
+8.2 migration-generator.ts
+  - createMigrationFile({ name }) — creates versioned .sql + .down.sql pair
+
+8.3 CLI commands (package.json scripts)
+  - npm run migrate
+  - npm run rollback
+  - npm run migration:create -- <name>
+
+8.4 Migration file conventions
+  - Up:   {version}_{name}.sql
+  - Down: {version}_{name}.down.sql
+  - Version auto-generated from timestamp if not specified
+
+================================================================================
+9. LOGGING MODULE (DETAIL)
+================================================================================
+
+  - Built on pino + pino-pretty (dev/non-production)
+  - LogContext fields: trackId, userId, email, method, path
+  - logger.runWithContext(ctx, fn) — AsyncLocalStorage scoped logging
+  - logger.logQuery(text, durationMs, params) — DB query debug logging
+  - Route wrappers log incoming requests and completed responses
+
+================================================================================
+10. CONFIGURATION (DETAIL)
+================================================================================
+
+10.1 YAML files
+  config/default.yml:
+    dbUrl, secret, jwtExpiresIn, migrationsDir, init.admin email/password
+
+  config/env.yml:
+    dbUrl: 'DATABASE_URL'
+    secret: 'JWT_SECRET'
+    jwtExpiresIn: 'JWT_EXPIRES_IN'
+    migrationsDir: 'MIGRATIONS_DIR'
+
+10.2 .env.example variables
+  DATABASE_URL
+  JWT_SECRET
+  JWT_EXPIRES_IN
+  MIGRATIONS_DIR
+  LOG_LEVEL
+  PORT
+
+10.3 API
+  - loadConfig()
+  - getConfig()
+  - configure(overrides)
+  - resetConfigForTests()
+
+================================================================================
+11. PACKAGE EXPORTS
+================================================================================
+
+Main entry: "base-framework" → dist/index.js
+
+Subpath exports:
+  - base-framework/auth
+  - base-framework/database
+  - base-framework/migrations
+
+Published files (package.json "files"):
+  - dist/
+  - config/
+  - migrations/
+  - scripts/
+
+Key exported symbols:
+  Auth:     login, logout, authenticateRequest, withAuthRoute, withRoleRoute,
+            hashPassword, signAccessToken, verifyAccessToken
+  Database: executeQuery, transaction, getPool, newClient
+  Migrations: runMigrations, rollbackLastMigration, createMigrationFile
+  Config:   loadConfig, getConfig, configure
+  Constants: PREFIX, USERS_TABLE, REVOKED_TOKENS_TABLE, SCHEMA_MIGRATIONS_TABLE
+  Utils:    createFetchServer, readJsonBody, getBearerTokenFromRequest
+  Logging:  logger, setLogLevel
+
+================================================================================
+12. SAMPLE APIS
+================================================================================
+
+12.1 base-framework/examples/sample-app/src/server.ts
+  Routes:
+    GET  /health                  — public health check
+    POST /api/auth/login          — email/password login
+    POST /api/auth/logout         — JWT logout (revokes token)
+    GET  /api/profile             — authenticated user profile
+    GET  /api/admin/dashboard     — requires 'admin' role
+
+  Run: npm run example (from base-framework root)
+
+12.2 repo1/src/server.ts
+  Routes:
+    POST /login   — login
+    GET  /me      — authenticated profile
+    GET  /admin   — admin role required
+
+  Run: npm run dev (from repo1 root, after migrate)
+
+================================================================================
+13. HOW ANOTHER REPO INSTALLS AND USES THE FRAMEWORK
+================================================================================
+
+Option A — GitHub:
+  npm install github:<org>/base-framework
+
+Option B — Local path (used in repo1):
+  "dependencies": {
+    "base-framework": "file:../base-framework"
+  }
+
+Setup steps for consuming repo:
+  1. Copy config/ directory (default.yml + env.yml)
+  2. Copy or symlink migrations/ (or author own migrations using uv_ tables)
+  3. Set .env with DATABASE_URL, JWT_SECRET, etc.
+  4. Add npm scripts pointing to base-framework/scripts/*.ts
+  5. npm run migrate
+  6. Import and use route handlers / services in app code
+
+Minimal usage example:
+
+  import {
+    loadConfig,
+    login,
+    withAuthRoute,
+    withPublicRoute,
+    readJsonBody,
+  } from 'base-framework';
+
+  loadConfig();
+
+  export const POST = withPublicRoute(async (req) => {
+    const body = await readJsonBody(req);
+    return Response.json(await login(body));
+  });
+
+================================================================================
+14. BUILD & VERIFICATION
+================================================================================
+
+  - npm install completed successfully in base-framework
+  - npm run build (tsc) completed successfully after all changes
+  - TypeScript strict mode enabled
+  - Output directory: dist/
+
+Note: End-to-end migration + API testing against a live PostgreSQL instance
+was not run in this chat session. Team should verify with:
+
+  cd base-framework
+  cp .env.example .env
+  # configure DATABASE_URL
+  npm run migrate
+  npm run example
+
+================================================================================
+15. IMPORTANT NOTES FOR TEAM LEAD
+================================================================================
+
+1. NO EXPRESS — Framework intentionally uses Fetch Request/Response pattern
+   to match core/Next.js conventions, not Express middleware.
+
+2. TABLE PREFIX — All tables use uv_ prefix. If old unprefixed tables exist
+   from an earlier local run, drop them or reset the database before migrating.
+
+3. CORE PARITY — Dependencies and patterns were chosen to match core repo,
+   not to introduce new libraries. bcrypt-ts and js-yaml are required.
+
+4. GENERIC FRAMEWORK — No Wayvo/metro-specific business logic was included.
+   Only generic auth, DB, migrations, logging, and route utilities.
+
+5. repo1 IS A REFERENCE CONSUMER — It demonstrates local package linking.
+   It is not a production app.
+
+6. MIGRATION ROLLBACK — Requires a .down.sql file for each migration.
+   Core repo does not expose rollback CLI; this was added per original request.
+
+7. JWT vs SESSION — core uses session cookies + better-auth. base-framework
+   uses JWT + uv_revoked_tokens for logout, as requested in original spec.
+
+================================================================================
+16. FILES TO REVIEW (PRIORITY ORDER)
+================================================================================
+
+  1. base-framework/README.md              — usage documentation
+  2. base-framework/package.json           — dependencies and scripts
+  3. base-framework/src/index.ts           — public API surface
+  4. base-framework/src/common/constants.ts — uv_ prefix definitions
+  5. base-framework/migrations/            — database schema
+  6. base-framework/src/auth/              — authentication module
+  7. base-framework/src/migrations/migration-runner.ts — migration engine
+  8. base-framework/examples/sample-app/   — sample API
+  9. repo1/                                — consumer example
+
+================================================================================
+END OF SUMMARY
+================================================================================

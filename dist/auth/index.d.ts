@@ -1,4 +1,8 @@
 export { assertRole, authenticateRequest, hasRole, optionalAuthenticateRequest, } from './auth.middleware.js';
+export { createAuthRoutes, createLoginPageRoute, createLoginRoute, createLogoutRoute, createProfileRoute, } from './auth.routes.js';
+export type { AuthRoutesOptions } from './auth.routes.js';
+export { renderLoginPage } from './login-page.js';
+export type { LoginPageOptions } from './login-page.js';
 export { login, getAuthUserByName, getUserByName } from './login.service.js';
 export { getUserRoles } from './roles.service.js';
 export { assertTokenNotRevoked, cleanupExpiredRevokedTokens, logout } from './logout.service.js';
