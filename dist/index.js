@@ -2,7 +2,7 @@ export { configure, getConfig, loadConfig, resetConfigForTests } from './lib/com
 export { HTTP, PREFIX, AUDIT_TABLE, REVOKED_TOKENS_TABLE, ROLES_TABLE, SAVED_SEARCH_TABLE, SCHEMA_MIGRATIONS_TABLE, USER_ROLES_TABLE, USER_SESSIONS_ARCH_TABLE, USER_SESSIONS_TABLE, USERS_TABLE } from './lib/common/constants.js';
 export { isUserActiveSync } from './lib/common/user-utils.js';
 export { createErrorResponse } from './lib/common/error-response.js';
-export { ForbiddenError, FrameworkError, NotFoundError, UnauthorizedError, UserError, getErrorMessage, isUserError, toErrorResponse, } from './lib/common/exceptions.js';
+export { ForbiddenError, FrameworkError, NotFoundError, UnauthorizedError, UserError, getErrorMessage, isUserError, toErrorResponse, AbortError, isAbortedRequestError, isErrorResponse, } from './lib/common/exceptions.js';
 export { createFetchServer } from './lib/common/fetch-server.js';
 export { getBearerTokenFromRequest, readJsonBody } from './lib/common/http.js';
 export { withAuthRoute, withPublicRoute, withRoleRoute } from './lib/common/routes.js';
@@ -10,5 +10,6 @@ export { default as logger, setLogLevel } from './lib/common/logger.js';
 export * from './lib/database/index.js';
 export * from './lib/migrations/index.js';
 export * from './lib/auth/index.js';
+export * from './lib/actions/index.js';
 export { escapeHtml } from './lib/common/utils.js';
 //# sourceMappingURL=index.js.map

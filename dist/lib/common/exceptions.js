@@ -42,10 +42,36 @@ export class NotFoundError extends UserError {
 export function isUserError(error) {
     return error instanceof UserError;
 }
+export function isErrorResponse(value) {
+    return (typeof value === 'object' &&
+        value !== null &&
+        'status' in value &&
+        value.status === 'ERROR' &&
+        'message' in value &&
+        typeof value.message === 'string');
+}
 export function toErrorResponse(error) {
     if (isUserError(error)) {
         return { status: 'ERROR', message: error.message };
     }
     return { status: 'ERROR', message: getErrorMessage(error) };
+}
+const ABORT_ERROR = 'AbortError';
+export class AbortError extends Error {
+    constructor() {
+        super(ABORT_ERROR);
+        this.name = ABORT_ERROR;
+    }
+}
+export function isAbortedRequestError(error) {
+    if (error instanceof Error) {
+        if ('code' in error && error.code === 'ECONNRESET') {
+            return true;
+        }
+        if (error.message === 'aborted' || error.name === 'AbortError') {
+            return true;
+        }
+    }
+    return false;
 }
 //# sourceMappingURL=exceptions.js.map

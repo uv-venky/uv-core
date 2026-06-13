@@ -55,9 +55,42 @@ export interface ErrorResponse {
   message: string;
 }
 
+export function isErrorResponse(value: unknown): value is ErrorResponse {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'status' in value &&
+    (value as any).status === 'ERROR' &&
+    'message' in value &&
+    typeof (value as any).message === 'string'
+  );
+}
+
 export function toErrorResponse(error: unknown): ErrorResponse {
   if (isUserError(error)) {
     return { status: 'ERROR', message: error.message };
   }
   return { status: 'ERROR', message: getErrorMessage(error) };
 }
+
+const ABORT_ERROR = 'AbortError';
+
+export class AbortError extends Error {
+  constructor() {
+    super(ABORT_ERROR);
+    this.name = ABORT_ERROR;
+  }
+}
+
+export function isAbortedRequestError(error: unknown): boolean {
+  if (error instanceof Error) {
+    if ('code' in error && error.code === 'ECONNRESET') {
+      return true;
+    }
+    if (error.message === 'aborted' || error.name === 'AbortError') {
+      return true;
+    }
+  }
+  return false;
+}
+

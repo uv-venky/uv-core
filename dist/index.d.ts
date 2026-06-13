@@ -4,7 +4,7 @@ export { HTTP, PREFIX, AUDIT_TABLE, REVOKED_TOKENS_TABLE, ROLES_TABLE, SAVED_SEA
 export { isUserActiveSync } from './lib/common/user-utils.js';
 export type { DBUserActive } from './lib/common/user-utils.js';
 export { createErrorResponse } from './lib/common/error-response.js';
-export { ForbiddenError, FrameworkError, NotFoundError, UnauthorizedError, UserError, getErrorMessage, isUserError, toErrorResponse, } from './lib/common/exceptions.js';
+export { ForbiddenError, FrameworkError, NotFoundError, UnauthorizedError, UserError, getErrorMessage, isUserError, toErrorResponse, AbortError, isAbortedRequestError, isErrorResponse, } from './lib/common/exceptions.js';
 export type { ErrorResponse } from './lib/common/exceptions.js';
 export { createFetchServer } from './lib/common/fetch-server.js';
 export { getBearerTokenFromRequest, readJsonBody } from './lib/common/http.js';
@@ -15,5 +15,6 @@ export type { LogContext, LoggerType } from './lib/common/logger.js';
 export * from './lib/database/index.js';
 export * from './lib/migrations/index.js';
 export * from './lib/auth/index.js';
+export * from './lib/actions/index.js';
 export { escapeHtml } from './lib/common/utils.js';
 //# sourceMappingURL=index.d.ts.map

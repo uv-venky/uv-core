@@ -13,6 +13,9 @@ export {
   getErrorMessage,
   isUserError,
   toErrorResponse,
+  AbortError,
+  isAbortedRequestError,
+  isErrorResponse,
 } from './lib/common/exceptions.js';
 export type { ErrorResponse } from './lib/common/exceptions.js';
 export { createFetchServer } from './lib/common/fetch-server.js';
@@ -24,5 +27,6 @@ export type { LogContext, LoggerType } from './lib/common/logger.js';
 export * from './lib/database/index.js';
 export * from './lib/migrations/index.js';
 export * from './lib/auth/index.js';
+export * from './lib/actions/index.js';
 export { escapeHtml } from './lib/common/utils.js';
 

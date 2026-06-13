@@ -20,5 +20,10 @@ export interface ErrorResponse {
     status: 'ERROR';
     message: string;
 }
+export declare function isErrorResponse(value: unknown): value is ErrorResponse;
 export declare function toErrorResponse(error: unknown): ErrorResponse;
+export declare class AbortError extends Error {
+    constructor();
+}
+export declare function isAbortedRequestError(error: unknown): boolean;
 //# sourceMappingURL=exceptions.d.ts.map
