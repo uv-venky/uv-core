@@ -10,12 +10,24 @@ export interface LogContext {
   path?: string;
 }
 
+export interface LoggerType {
+  error(...args: unknown[]): void;
+  warn(...args: unknown[]): void;
+  info(...args: unknown[]): void;
+  debug(...args: unknown[]): void;
+  trace(...args: unknown[]): void;
+  logQuery(text: string, durationMs: number, params?: unknown[]): void;
+  runWithContext<T>(ctx: LogContext, fn: () => T): T;
+  readonly traceEnabled: boolean;
+  readonly debugEnabled: boolean;
+}
+
 declare global {
   // eslint-disable-next-line no-var
   var __baseFrameworkLogger: Logger | undefined;
 }
 
-class Logger {
+class Logger implements LoggerType {
   readonly context = new AsyncLocalStorage<LogContext>();
   readonly pino: PinoLogger;
 
@@ -109,9 +121,7 @@ function ensureLogger(): Logger {
   return globalThis.__baseFrameworkLogger;
 }
 
-export type LoggerType = Logger;
-
-const logger = {
+const logger: LoggerType = {
   error: (...args: unknown[]) => ensureLogger().error(...args),
   warn: (...args: unknown[]) => ensureLogger().warn(...args),
   info: (...args: unknown[]) => ensureLogger().info(...args),
@@ -125,9 +135,6 @@ const logger = {
   },
   get debugEnabled(): boolean {
     return ensureLogger().debugEnabled;
-  },
-  get context(): AsyncLocalStorage<LogContext> {
-    return ensureLogger().context;
   },
 };
 

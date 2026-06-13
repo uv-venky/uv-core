@@ -91,9 +91,6 @@ const logger = {
     get debugEnabled() {
         return ensureLogger().debugEnabled;
     },
-    get context() {
-        return ensureLogger().context;
-    },
 };
 export default logger;
 export function setLogLevel(level) {

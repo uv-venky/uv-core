@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import dotenv from 'dotenv';
 import path from 'node:path';
-import { loadConfig } from '../src/common/config.js';
-import logger from '../src/common/logger.js';
-import { createMigrationFile } from '../src/migrations/migration-generator.js';
+import { loadConfig } from '../common/config.js';
+import logger from '../common/logger.js';
+import { createMigrationFile } from '../migrations/migration-generator.js';
 
 async function main(): Promise<void> {
   dotenv.config();

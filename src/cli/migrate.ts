@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import dotenv from 'dotenv';
 import path from 'node:path';
-import { loadConfig } from '../src/common/config.js';
-import logger from '../src/common/logger.js';
-import { createStandaloneClient, closePool } from '../src/database/postgres.js';
-import { runMigrations } from '../src/migrations/migration-runner.js';
+import { loadConfig } from '../common/config.js';
+import logger from '../common/logger.js';
+import { createStandaloneClient, closePool } from '../database/postgres.js';
+import { runMigrations } from '../migrations/migration-runner.js';
 
 async function main(): Promise<void> {
   dotenv.config();

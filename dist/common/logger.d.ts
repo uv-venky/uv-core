@@ -7,10 +7,21 @@ export interface LogContext {
     method?: string;
     path?: string;
 }
+export interface LoggerType {
+    error(...args: unknown[]): void;
+    warn(...args: unknown[]): void;
+    info(...args: unknown[]): void;
+    debug(...args: unknown[]): void;
+    trace(...args: unknown[]): void;
+    logQuery(text: string, durationMs: number, params?: unknown[]): void;
+    runWithContext<T>(ctx: LogContext, fn: () => T): T;
+    readonly traceEnabled: boolean;
+    readonly debugEnabled: boolean;
+}
 declare global {
     var __baseFrameworkLogger: Logger | undefined;
 }
-declare class Logger {
+declare class Logger implements LoggerType {
     readonly context: AsyncLocalStorage<LogContext>;
     readonly pino: PinoLogger;
     constructor(pinoLogger: PinoLogger);
@@ -25,19 +36,7 @@ declare class Logger {
     trace(...args: unknown[]): void;
     logQuery(text: string, durationMs: number, params?: unknown[]): void;
 }
-export type LoggerType = Logger;
-declare const logger: {
-    error: (...args: unknown[]) => void;
-    warn: (...args: unknown[]) => void;
-    info: (...args: unknown[]) => void;
-    debug: (...args: unknown[]) => void;
-    trace: (...args: unknown[]) => void;
-    logQuery: (text: string, durationMs: number, params?: unknown[]) => void;
-    runWithContext: <T>(ctx: LogContext, fn: () => T) => T;
-    readonly traceEnabled: boolean;
-    readonly debugEnabled: boolean;
-    readonly context: AsyncLocalStorage<LogContext>;
-};
+declare const logger: LoggerType;
 export default logger;
 export declare function setLogLevel(level: string): void;
 //# sourceMappingURL=logger.d.ts.map
