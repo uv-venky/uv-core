@@ -10,4 +10,5 @@ export { default as logger, setLogLevel } from './lib/common/logger.js';
 export * from './lib/database/index.js';
 export * from './lib/migrations/index.js';
 export * from './lib/auth/index.js';
+export { escapeHtml } from './lib/common/utils.js';
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,15 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+
+export interface NewPasswordPageOptions {
+  title?: string;
+  brandName?: string;
+  logo?: string | React.ReactNode;
+  backgroundUrl?: string;
+  apiPath?: string;
+  loginPath?: string;
+}
+
 const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; width: auto;" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
   <g>
     <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z" fill="#fff"/>
@@ -10,8 +20,25 @@ const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; w
   </g>
   <path d="M312.112,152.829l-125.516-114.769-125.37,114.965,3.529,4.915c17.295-10.472,36.182-18.512,56.192-23.899,20.397-5.492,42.098-8.277,64.499-8.277,45.159,0,88.738,11.358,123.106,32.025l3.561-4.959ZM186.601,45.573l80.599,73.698c-12.717-9.665-26.21-19.774-38.636-28.631-30.51-21.746-38.659-24.535-42.351-24.535s-11.739,2.763-41.699,24.305c-11.803,8.487-24.626,18.169-36.798,27.5l78.883-72.337ZM147.751,94.909c28.149-20.241,36.181-23.263,38.464-23.263,2.299,0,10.44,3.054,39.134,23.506,13.704,9.768,28.737,21.084,42.58,31.637-29.526-16.845-63.311-33.625-82.099-33.625-18.505,0-51.113,16.427-79.806,33.036,13.598-10.464,28.331-21.658,41.727-31.29ZM119.506,128.69c-4.74,1.276-9.414,2.706-14.026,4.269,28.621-16.723,62.503-34.254,80.35-34.254,18.06,0,52.858,17.689,82.259,34.598-25.679-8.546-53.856-13.081-82.644-13.081-22.887,0-45.073,2.849-65.939,8.467Z" fill="#fff"/>
 </svg>`;
-export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitchmate', logo = DEFAULT_LOGO_SVG, backgroundUrl = '', apiPath = '/api/auth/reset-password/request', loginPath = '/login', termsUrl = '#', privacyUrl = '#', }) => {
-    return (_jsxs("html", { lang: "en", children: [_jsxs("head", { children: [_jsx("meta", { charSet: "utf-8" }), _jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }), _jsx("title", { children: `${title} | ${brandName}` }), _jsx("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }), _jsx("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }), _jsx("link", { href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap", rel: "stylesheet" }), _jsx("style", { dangerouslySetInnerHTML: { __html: `
+
+export const NewPasswordPage: React.FC<NewPasswordPageOptions> = ({
+  title = 'Change Password',
+  brandName = 'Stitchmate',
+  logo = DEFAULT_LOGO_SVG,
+  backgroundUrl = '',
+  apiPath = '/api/auth/reset-password/change',
+  loginPath = '/login',
+}) => {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{`${title} | ${brandName}`}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --primary: #512fff;
             --primary-hover: #4120D9;
@@ -20,6 +47,7 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
             --text-white: #f8fafc;
             --text-muted: #94a3b8;
             --border-slate: #334155;
+            --color-success: #22c55e;
           }
           
           * {
@@ -225,18 +253,18 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
             box-shadow: 0 4px 15px rgba(81, 47, 255, 0.4);
           }
 
-          .btn-primary:hover {
+          .btn-primary:hover:not(:disabled) {
             background-color: var(--primary-hover);
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(81, 47, 255, 0.5);
           }
 
-          .btn-primary:active {
+          .btn-primary:active:not(:disabled) {
             transform: translateY(0);
           }
 
           .btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
@@ -265,24 +293,58 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
             text-decoration: underline;
           }
 
-          .arrow-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            fill: currentColor;
+          .req-list {
+            list-style: none;
+            margin-top: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
           }
 
-          .terms-text {
-            font-size: 0.75rem;
-            color: rgba(248, 250, 252, 0.5);
-            line-height: 1.4;
-            margin-top: 1.25rem;
-            text-align: left;
+          .req-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
           }
 
-          .terms-text a {
-            color: inherit;
-            text-decoration: underline;
-            cursor: pointer;
+          .req-dot {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 1px solid var(--border-slate);
+            background-color: rgba(30, 41, 59, 0.3);
+            transition: all 0.2s ease;
+          }
+
+          .req-item.valid {
+            color: var(--color-success);
+          }
+
+          .req-item.valid .req-dot {
+            border-color: var(--color-success);
+            background-color: var(--color-success);
+            color: white;
+          }
+
+          .checkmark {
+            display: none;
+            width: 0.625rem;
+            height: 0.625rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .req-item.valid .checkmark {
+            display: block;
           }
 
           footer {
@@ -294,14 +356,117 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
             z-index: 10;
             flex-shrink: 0;
           }
-        ` } })] }), _jsxs("body", { children: [_jsx("div", { className: "bg-container" }), _jsx("header", { children: logo && typeof logo === 'string' ? (_jsx("div", { className: "logo-container", dangerouslySetInnerHTML: { __html: logo } })) : (_jsx("div", { className: "logo-container", children: logo })) }), _jsx("main", { children: _jsx("div", { className: "login-box", children: _jsxs("div", { className: "card", id: "form-card", children: [_jsx("div", { id: "error-alert", className: "error-banner", role: "alert" }), _jsxs("div", { id: "request-view", children: [_jsx("h1", { className: "form-title", children: "Reset Password" }), _jsxs("form", { id: "reset-form", children: [_jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "username", className: "form-label", children: "Username" }), _jsx("input", { id: "username", name: "username", type: "text", autoComplete: "username", className: "form-control", required: true, autoFocus: true })] }), _jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "email", className: "form-label", children: "Email" }), _jsx("input", { id: "email", name: "email", type: "email", autoComplete: "email", className: "form-control", required: true })] }), _jsx("button", { type: "submit", id: "submit-btn", className: "btn btn-primary", style: { marginTop: '1.5rem' }, children: "Send Reset Link" }), _jsx("div", { className: "footer-links-container", children: _jsxs("a", { href: loginPath, className: "text-link", children: [_jsx("svg", { className: "arrow-icon", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg", children: _jsx("path", { d: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" }) }), "Back to login"] }) })] })] })] }) }) }), _jsxs("footer", { children: ["\u00A9 ", new Date().getFullYear(), " ", brandName, ". All rights reserved."] }), _jsx("script", { dangerouslySetInnerHTML: { __html: `
+        ` }} />
+      </head>
+      <body>
+        <div className="bg-container"></div>
+        
+        <header>
+          {logo && typeof logo === 'string' ? (
+            <div className="logo-container" dangerouslySetInnerHTML={{ __html: logo }} />
+          ) : (
+            <div className="logo-container">{logo}</div>
+          )}
+        </header>
+
+        <main>
+          <div className="login-box">
+            <div className="card" id="form-card">
+              <div id="error-alert" className="error-banner" role="alert"></div>
+
+              <div id="change-view">
+                <h1 className="form-title">Change your password</h1>
+                <form id="change-form">
+                  <div className="form-group">
+                    <label htmlFor="password" className="form-label">New Password</label>
+                    <input id="password" name="password" type="password" autoComplete="new-password" className="form-control" required autoFocus />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="confirm-password" className="form-label">Confirm Password</label>
+                    <input id="confirm-password" name="confirm-password" type="password" autoComplete="new-password" className="form-control" required />
+                  </div>
+
+                  <ul className="req-list">
+                    <li id="req-length" className="req-item">
+                      <span className="req-dot">
+                        <svg className="checkmark" viewBox="0 0 10 10">
+                          <polyline points="2 5.5 4 7.5 8 3" />
+                        </svg>
+                      </span>
+                      Password is at least 8 characters long
+                    </li>
+                    <li id="req-uppercase" className="req-item">
+                      <span className="req-dot">
+                        <svg className="checkmark" viewBox="0 0 10 10">
+                          <polyline points="2 5.5 4 7.5 8 3" />
+                        </svg>
+                      </span>
+                      Contains at least one uppercase letter
+                    </li>
+                    <li id="req-lowercase" className="req-item">
+                      <span className="req-dot">
+                        <svg className="checkmark" viewBox="0 0 10 10">
+                          <polyline points="2 5.5 4 7.5 8 3" />
+                        </svg>
+                      </span>
+                      Contains at least one lowercase letter
+                    </li>
+                    <li id="req-number" className="req-item">
+                      <span className="req-dot">
+                        <svg className="checkmark" viewBox="0 0 10 10">
+                          <polyline points="2 5.5 4 7.5 8 3" />
+                        </svg>
+                      </span>
+                      Contains at least one number
+                    </li>
+                    <li id="req-match" className="req-item">
+                      <span className="req-dot">
+                        <svg className="checkmark" viewBox="0 0 10 10">
+                          <polyline points="2 5.5 4 7.5 8 3" />
+                        </svg>
+                      </span>
+                      Passwords match
+                    </li>
+                  </ul>
+
+                  <button type="submit" id="submit-btn" className="btn btn-primary" style={{ marginTop: '1.5rem' }} disabled>Change Password</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer>
+          &copy; {new Date().getFullYear()} {brandName}. All rights reserved.
+        </footer>
+
+        <script dangerouslySetInnerHTML={{ __html: `
           (function () {
             var errorAlert = document.getElementById('error-alert');
-            var form = document.getElementById('reset-form');
+            var form = document.getElementById('change-form');
             var submitBtn = document.getElementById('submit-btn');
             var card = document.getElementById('form-card');
+            
+            var passwordInput = document.getElementById('password');
+            var confirmInput = document.getElementById('confirm-password');
+            
+            var reqLength = document.getElementById('req-length');
+            var reqUppercase = document.getElementById('req-uppercase');
+            var reqLowercase = document.getElementById('req-lowercase');
+            var reqNumber = document.getElementById('req-number');
+            var reqMatch = document.getElementById('req-match');
+
             var apiPath = ${JSON.stringify(apiPath)};
             var loginPath = ${JSON.stringify(loginPath)};
+
+            var searchParams = new URLSearchParams(window.location.search);
+            var token = searchParams.get('token') || '';
+
+            if (!token) {
+              var pathSegments = window.location.pathname.split('/');
+              token = pathSegments[pathSegments.length - 1] || '';
+            }
 
             function showError(message) {
               errorAlert.textContent = message;
@@ -312,6 +477,37 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
               errorAlert.style.display = 'none';
               errorAlert.textContent = '';
             }
+
+            function validateForm() {
+              var val = passwordInput.value;
+              var confirmVal = confirmInput.value;
+
+              var meetsLength = val.length >= 8;
+              var meetsUpper = /[A-Z]/.test(val);
+              var meetsLower = /[a-z]/.test(val);
+              var meetsNumber = /[0-9]/.test(val);
+              var meetsMatch = val.length > 0 && val === confirmVal;
+
+              toggleReq(reqLength, meetsLength);
+              toggleReq(reqUppercase, meetsUpper);
+              toggleReq(reqLowercase, meetsLower);
+              toggleReq(reqNumber, meetsNumber);
+              toggleReq(reqMatch, meetsMatch);
+
+              var isValid = meetsLength && meetsUpper && meetsLower && meetsNumber && meetsMatch;
+              submitBtn.disabled = !isValid;
+            }
+
+            function toggleReq(el, isValid) {
+              if (isValid) {
+                el.classList.add('valid');
+              } else {
+                el.classList.remove('valid');
+              }
+            }
+
+            passwordInput.addEventListener('input', validateForm);
+            confirmInput.addEventListener('input', validateForm);
 
             if (form) {
               form.addEventListener('submit', async function (event) {
@@ -324,8 +520,8 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                      username: document.getElementById('username').value.trim(),
-                      email: document.getElementById('email').value.trim(),
+                      token: token,
+                      password: passwordInput.value,
                     }),
                   });
 
@@ -336,9 +532,9 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
 
                   card.innerHTML = [
                     '<div class="success-panel">',
-                      '<h2 class="success-title">Reset Password</h2>',
+                      '<h2 class="success-title">Password changed</h2>',
                       '<p class="success-desc">',
-                        'Please check your email for a reset link provided we have an account for the given username and email.',
+                        'Your password has been changed successfully.',
                       '</p>',
                       '<div class="footer-links-container" style="justify-content: flex-start; margin-top: 1rem;">',
                         '<a href="' + loginPath + '" class="text-link">',
@@ -349,16 +545,19 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
                   ].join('');
 
                 } catch (error) {
-                  showError(error && error.message ? error.message : 'Failed to request password reset');
-                  submitBtn.disabled = false;
+                  showError(error && error.message ? error.message : 'Failed to change password');
+                  validateForm();
                 }
               });
             }
           })();
-        ` } })] })] }));
+        ` }} />
+      </body>
+    </html>
+  );
 };
-export function renderResetPasswordPage(options = {}) {
-    const markup = renderToStaticMarkup(_jsx(ResetPasswordPage, { ...options }));
-    return `<!DOCTYPE html>\n${markup}`;
+
+export function renderNewPasswordPage(options: NewPasswordPageOptions = {}): string {
+  const markup = renderToStaticMarkup(<NewPasswordPage {...options} />);
+  return `<!DOCTYPE html>\n${markup}`;
 }
-//# sourceMappingURL=reset-password-page.js.map

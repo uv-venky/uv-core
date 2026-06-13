@@ -14,4 +14,8 @@ export { hashPassword, signAccessToken, toAuthUser, verifyAccessToken, verifyPas
 export { withAuthRoute, withPublicRoute, withRoleRoute } from '../common/routes.js';
 export type { AuthenticatedRequest } from './auth.middleware.js';
 export type { AuthUser, DbUserRow, JwtPayload, LoginInput, LoginResult } from './types.js';
+export { checkPageAccess, getUserTeams } from './sidebar.js';
+export type { PageItem, ServerPageItem, PageGroup, ServerPageGroup, ModuleMenuItems, ServerModuleMenuItems, Team, ServerTeam, } from './sidebar.js';
+export { renderSidebar } from '../../components/sidebar-component.js';
+export type { SidebarRenderOptions } from '../../components/sidebar-component.js';
 //# sourceMappingURL=index.d.ts.map

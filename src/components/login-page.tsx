@@ -1,5 +1,24 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+
+export interface LoginPageOptions {
+  title?: string;
+  loginApiPath?: string;
+  redirectUrl?: string;
+  tokenStorageKey?: string;
+  brandName?: string;
+  logo?: string | React.ReactNode;
+  backgroundUrl?: string;
+  googleAuthEnabled?: boolean;
+  googleAuthUrl?: string;
+  ssoEnabled?: boolean;
+  ssoUrl?: string;
+  ssoButtonText?: string;
+  ssoDescription?: string;
+  termsUrl?: string;
+  privacyUrl?: string;
+}
+
 const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; width: auto;" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
   <g>
     <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z" fill="#fff"/>
@@ -10,9 +29,36 @@ const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; w
   </g>
   <path d="M312.112,152.829l-125.516-114.769-125.37,114.965,3.529,4.915c17.295-10.472,36.182-18.512,56.192-23.899,20.397-5.492,42.098-8.277,64.499-8.277,45.159,0,88.738,11.358,123.106,32.025l3.561-4.959ZM186.601,45.573l80.599,73.698c-12.717-9.665-26.21-19.774-38.636-28.631-30.51-21.746-38.659-24.535-42.351-24.535s-11.739,2.763-41.699,24.305c-11.803,8.487-24.626,18.169-36.798,27.5l78.883-72.337ZM147.751,94.909c28.149-20.241,36.181-23.263,38.464-23.263,2.299,0,10.44,3.054,39.134,23.506,13.704,9.768,28.737,21.084,42.58,31.637-29.526-16.845-63.311-33.625-82.099-33.625-18.505,0-51.113,16.427-79.806,33.036,13.598-10.464,28.331-21.658,41.727-31.29ZM119.506,128.69c-4.74,1.276-9.414,2.706-14.026,4.269,28.621-16.723,62.503-34.254,80.35-34.254,18.06,0,52.858,17.689,82.259,34.598-25.679-8.546-53.856-13.081-82.644-13.081-22.887,0-45.073,2.849-65.939,8.467Z" fill="#fff"/>
 </svg>`;
-export const LoginPage = ({ title = 'Sign In', loginApiPath = '/api/auth/login', redirectUrl = '/', tokenStorageKey = 'uv_access_token', brandName = 'Stitchmate', logo = DEFAULT_LOGO_SVG, backgroundUrl = '', googleAuthEnabled = false, googleAuthUrl = '/api/auth/google', ssoEnabled = false, ssoUrl = '/api/auth/sso', ssoButtonText = 'Sign In', ssoDescription = 'Only accessible via Metro One email addresses.', termsUrl = '#', privacyUrl = '#', }) => {
-    const showTabs = googleAuthEnabled || ssoEnabled;
-    return (_jsxs("html", { lang: "en", children: [_jsxs("head", { children: [_jsx("meta", { charSet: "utf-8" }), _jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }), _jsx("title", { children: `${title} | ${brandName}` }), _jsx("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }), _jsx("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }), _jsx("link", { href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap", rel: "stylesheet" }), _jsx("style", { dangerouslySetInnerHTML: { __html: `
+
+export const LoginPage: React.FC<LoginPageOptions> = ({
+  title = 'Sign In',
+  loginApiPath = '/api/auth/login',
+  redirectUrl = '/',
+  tokenStorageKey = 'uv_access_token',
+  brandName = 'Stitchmate',
+  logo = DEFAULT_LOGO_SVG,
+  backgroundUrl = '',
+  googleAuthEnabled = false,
+  googleAuthUrl = '/api/auth/google',
+  ssoEnabled = false,
+  ssoUrl = '/api/auth/sso',
+  ssoButtonText = 'Sign In',
+  ssoDescription = 'Only accessible via Metro One email addresses.',
+  termsUrl = '#',
+  privacyUrl = '#',
+}) => {
+  const showTabs = googleAuthEnabled || ssoEnabled;
+
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{`${title} | ${brandName}`}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --primary: #512fff;
             --primary-hover: #4120D9;
@@ -383,7 +429,125 @@ export const LoginPage = ({ title = 'Sign In', loginApiPath = '/api/auth/login',
             z-index: 10;
             flex-shrink: 0;
           }
-        ` } })] }), _jsxs("body", { children: [_jsx("div", { className: "bg-container" }), _jsx("header", { children: logo && typeof logo === 'string' ? (_jsx("div", { className: "logo-container", dangerouslySetInnerHTML: { __html: logo } })) : (_jsx("div", { className: "logo-container", children: logo })) }), _jsx("main", { children: _jsx("div", { className: "login-box", children: _jsxs("div", { className: "card", children: [_jsx("div", { id: "error-alert", className: "error-banner", role: "alert" }), showTabs && (_jsxs("div", { className: "tabs-list", children: [_jsx("button", { type: "button", className: "tab-trigger active", "data-tab": "client", children: "Client & Affiliate" }), _jsx("button", { type: "button", className: "tab-trigger", "data-tab": "employee", children: "Employee Login" })] })), showTabs ? (_jsxs("div", { id: "tab-client", className: "tab-content", children: [_jsx("h1", { className: "form-title", children: "Sign In" }), _jsxs("form", { id: "login-form", children: [_jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "email", className: "form-label", children: "Email" }), _jsx("input", { id: "email", name: "email", type: "email", autoComplete: "username", className: "form-control", required: true })] }), _jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "password", className: "form-label", children: "Password" }), _jsx("input", { id: "password", name: "password", type: "password", autoComplete: "current-password", minLength: 5, className: "form-control", required: true }), _jsx("div", { className: "trouble-link-container", children: _jsx("a", { href: "/login/reset-password", className: "text-link", children: "Trouble logging in?" }) })] }), _jsxs("p", { className: "terms-text", children: ["By Signing In, I have read, and I understand and agree to the", ' ', _jsx("a", { href: termsUrl, children: "Terms of Use" }), ' ', "and", ' ', _jsx("a", { href: privacyUrl, children: "Data Privacy Notice" }), "."] }), _jsx("button", { type: "submit", id: "submit-btn", className: "btn btn-primary", style: { marginTop: '1.5rem' }, children: "Sign In" })] })] })) : (_jsxs("form", { id: "login-form", children: [_jsx("h1", { className: "form-title", children: "Sign In" }), _jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "email", className: "form-label", children: "Email" }), _jsx("input", { id: "email", name: "email", type: "email", autoComplete: "username", className: "form-control", required: true })] }), _jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "password", className: "form-label", children: "Password" }), _jsx("input", { id: "password", name: "password", type: "password", autoComplete: "current-password", minLength: 5, className: "form-control", required: true }), _jsx("div", { className: "trouble-link-container", children: _jsx("a", { href: "/login/reset-password", className: "text-link", children: "Trouble logging in?" }) })] }), _jsxs("p", { className: "terms-text", children: ["By Signing In, I have read, and I understand and agree to the", ' ', _jsx("a", { href: termsUrl, children: "Terms of Use" }), ' ', "and", ' ', _jsx("a", { href: privacyUrl, children: "Data Privacy Notice" }), "."] }), _jsx("button", { type: "submit", id: "submit-btn", className: "btn btn-primary", style: { marginTop: '1.5rem' }, children: "Sign In" })] })), showTabs && (_jsx("div", { id: "tab-employee", className: "tab-content hidden", children: _jsxs("div", { className: "sso-container", children: [ssoEnabled && (_jsxs(_Fragment, { children: [_jsxs("h2", { className: "sso-title", children: [brandName, " SSO Login"] }), _jsx("p", { className: "sso-desc", children: ssoDescription }), _jsx("button", { type: "button", id: "sso-btn", className: "btn btn-primary btn-sso", children: ssoButtonText })] })), ssoEnabled && googleAuthEnabled && (_jsx("div", { className: "divider", children: _jsx("span", { className: "divider-text", children: "or" }) })), googleAuthEnabled && (_jsxs("button", { type: "button", id: "google-btn", className: "btn btn-outline btn-google", children: [_jsxs("svg", { className: "google-icon", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg", children: [_jsx("path", { d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z", fill: "#4285F4" }), _jsx("path", { d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z", fill: "#34A853" }), _jsx("path", { d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z", fill: "#FBBC05" }), _jsx("path", { d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z", fill: "#EA4335" })] }), "Sign in with Google"] }))] }) }))] }) }) }), _jsxs("footer", { children: ["\u00A9 ", new Date().getFullYear(), " ", brandName, ". All rights reserved."] }), _jsx("script", { dangerouslySetInnerHTML: { __html: `
+        ` }} />
+      </head>
+      <body>
+        <div className="bg-container"></div>
+        
+        <header>
+          {logo && typeof logo === 'string' ? (
+            <div className="logo-container" dangerouslySetInnerHTML={{ __html: logo }} />
+          ) : (
+            <div className="logo-container">{logo}</div>
+          )}
+        </header>
+
+        <main>
+          <div className="login-box">
+            <div className="card">
+              <div id="error-alert" className="error-banner" role="alert"></div>
+
+              {showTabs && (
+                <div className="tabs-list">
+                  <button type="button" className="tab-trigger active" data-tab="client">Client & Affiliate</button>
+                  <button type="button" className="tab-trigger" data-tab="employee">Employee Login</button>
+                </div>
+              )}
+
+              {showTabs ? (
+                <div id="tab-client" className="tab-content">
+                  <h1 className="form-title">Sign In</h1>
+                  <form id="login-form">
+                    <div className="form-group">
+                      <label htmlFor="email" className="form-label">Email</label>
+                      <input id="email" name="email" type="email" autoComplete="username" className="form-control" required />
+                    </div>
+                    
+                    <div className="form-group">
+                      <label htmlFor="password" className="form-label">Password</label>
+                      <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required />
+                      <div className="trouble-link-container">
+                        <a href="/login/reset-password" className="text-link">Trouble logging in?</a>
+                      </div>
+                    </div>
+
+                    <p className="terms-text">
+                      By Signing In, I have read, and I understand and agree to the{' '}
+                      <a href={termsUrl}>Terms of Use</a>{' '}
+                      and{' '}
+                      <a href={privacyUrl}>Data Privacy Notice</a>.
+                    </p>
+
+                    <button type="submit" id="submit-btn" className="btn btn-primary" style={{ marginTop: '1.5rem' }}>Sign In</button>
+                  </form>
+                </div>
+              ) : (
+                <form id="login-form">
+                  <h1 className="form-title">Sign In</h1>
+                  <div className="form-group">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input id="email" name="email" type="email" autoComplete="username" className="form-control" required />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <input id="password" name="password" type="password" autoComplete="current-password" minLength={5} className="form-control" required />
+                    <div className="trouble-link-container">
+                      <a href="/login/reset-password" className="text-link">Trouble logging in?</a>
+                    </div>
+                  </div>
+
+                  <p className="terms-text">
+                    By Signing In, I have read, and I understand and agree to the{' '}
+                    <a href={termsUrl}>Terms of Use</a>{' '}
+                    and{' '}
+                    <a href={privacyUrl}>Data Privacy Notice</a>.
+                  </p>
+
+                  <button type="submit" id="submit-btn" className="btn btn-primary" style={{ marginTop: '1.5rem' }}>Sign In</button>
+                </form>
+              )}
+
+              {showTabs && (
+                <div id="tab-employee" className="tab-content hidden">
+                  <div className="sso-container">
+                    {ssoEnabled && (
+                      <>
+                        <h2 className="sso-title">{brandName} SSO Login</h2>
+                        <p className="sso-desc">{ssoDescription}</p>
+                        <button type="button" id="sso-btn" className="btn btn-primary btn-sso">{ssoButtonText}</button>
+                      </>
+                    )}
+                    
+                    {ssoEnabled && googleAuthEnabled && (
+                      <div className="divider">
+                        <span className="divider-text">or</span>
+                      </div>
+                    )}
+                    
+                    {googleAuthEnabled && (
+                      <button type="button" id="google-btn" className="btn btn-outline btn-google">
+                        <svg className="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Sign in with Google
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+
+        <footer>
+          &copy; {new Date().getFullYear()} {brandName}. All rights reserved.
+        </footer>
+
+        <script dangerouslySetInnerHTML={{ __html: `
           (function () {
             var errorAlert = document.getElementById('error-alert');
             var form = document.getElementById('login-form');
@@ -484,10 +648,13 @@ export const LoginPage = ({ title = 'Sign In', loginApiPath = '/api/auth/login',
               });
             }
           })();
-        ` } })] })] }));
+        ` }} />
+      </body>
+    </html>
+  );
 };
-export function renderLoginPage(options = {}) {
-    const markup = renderToStaticMarkup(_jsx(LoginPage, { ...options }));
-    return `<!DOCTYPE html>\n${markup}`;
+
+export function renderLoginPage(options: LoginPageOptions = {}): string {
+  const markup = renderToStaticMarkup(<LoginPage {...options} />);
+  return `<!DOCTYPE html>\n${markup}`;
 }
-//# sourceMappingURL=login-page.js.map

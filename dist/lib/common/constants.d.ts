@@ -9,6 +9,7 @@ export declare const AUDIT_TABLE = "sm.uv_audit";
 export declare const SAVED_SEARCH_TABLE = "sm.uv_saved_search";
 export declare const REVOKED_TOKENS_TABLE = "sm.uv_revoked_tokens";
 export declare const SCHEMA_MIGRATIONS_TABLE = "sm.uv_migrations";
+export declare const APPS_TABLE = "sm.uv_apps";
 export declare const DEFAULT_APP_ID = "core";
 export declare const DEFAULT_JWT_EXPIRES_IN = "1h";
 export declare const DEFAULT_MIGRATIONS_DIR = "./migrations";

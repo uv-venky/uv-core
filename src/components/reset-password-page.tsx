@@ -1,5 +1,17 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+
+export interface ResetPasswordPageOptions {
+  title?: string;
+  brandName?: string;
+  logo?: string | React.ReactNode;
+  backgroundUrl?: string;
+  apiPath?: string;
+  loginPath?: string;
+  termsUrl?: string;
+  privacyUrl?: string;
+}
+
 const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; width: auto;" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
   <g>
     <path d="M373.684,148.475h-10.867l47.677-90.412h11.57l46.509,90.412h-10.867l-37.629-73.597-3.857-8.407-3.973,8.407-38.563,73.597Z" fill="#fff"/>
@@ -10,8 +22,27 @@ const DEFAULT_LOGO_SVG = `<svg viewBox="0 0 1000 201" style="max-height: 48px; w
   </g>
   <path d="M312.112,152.829l-125.516-114.769-125.37,114.965,3.529,4.915c17.295-10.472,36.182-18.512,56.192-23.899,20.397-5.492,42.098-8.277,64.499-8.277,45.159,0,88.738,11.358,123.106,32.025l3.561-4.959ZM186.601,45.573l80.599,73.698c-12.717-9.665-26.21-19.774-38.636-28.631-30.51-21.746-38.659-24.535-42.351-24.535s-11.739,2.763-41.699,24.305c-11.803,8.487-24.626,18.169-36.798,27.5l78.883-72.337ZM147.751,94.909c28.149-20.241,36.181-23.263,38.464-23.263,2.299,0,10.44,3.054,39.134,23.506,13.704,9.768,28.737,21.084,42.58,31.637-29.526-16.845-63.311-33.625-82.099-33.625-18.505,0-51.113,16.427-79.806,33.036,13.598-10.464,28.331-21.658,41.727-31.29ZM119.506,128.69c-4.74,1.276-9.414,2.706-14.026,4.269,28.621-16.723,62.503-34.254,80.35-34.254,18.06,0,52.858,17.689,82.259,34.598-25.679-8.546-53.856-13.081-82.644-13.081-22.887,0-45.073,2.849-65.939,8.467Z" fill="#fff"/>
 </svg>`;
-export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitchmate', logo = DEFAULT_LOGO_SVG, backgroundUrl = '', apiPath = '/api/auth/reset-password/request', loginPath = '/login', termsUrl = '#', privacyUrl = '#', }) => {
-    return (_jsxs("html", { lang: "en", children: [_jsxs("head", { children: [_jsx("meta", { charSet: "utf-8" }), _jsx("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }), _jsx("title", { children: `${title} | ${brandName}` }), _jsx("link", { rel: "preconnect", href: "https://fonts.googleapis.com" }), _jsx("link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" }), _jsx("link", { href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap", rel: "stylesheet" }), _jsx("style", { dangerouslySetInnerHTML: { __html: `
+
+export const ResetPasswordPage: React.FC<ResetPasswordPageOptions> = ({
+  title = 'Reset Password',
+  brandName = 'Stitchmate',
+  logo = DEFAULT_LOGO_SVG,
+  backgroundUrl = '',
+  apiPath = '/api/auth/reset-password/request',
+  loginPath = '/login',
+  termsUrl = '#',
+  privacyUrl = '#',
+}) => {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{`${title} | ${brandName}`}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --primary: #512fff;
             --primary-hover: #4120D9;
@@ -294,7 +325,58 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
             z-index: 10;
             flex-shrink: 0;
           }
-        ` } })] }), _jsxs("body", { children: [_jsx("div", { className: "bg-container" }), _jsx("header", { children: logo && typeof logo === 'string' ? (_jsx("div", { className: "logo-container", dangerouslySetInnerHTML: { __html: logo } })) : (_jsx("div", { className: "logo-container", children: logo })) }), _jsx("main", { children: _jsx("div", { className: "login-box", children: _jsxs("div", { className: "card", id: "form-card", children: [_jsx("div", { id: "error-alert", className: "error-banner", role: "alert" }), _jsxs("div", { id: "request-view", children: [_jsx("h1", { className: "form-title", children: "Reset Password" }), _jsxs("form", { id: "reset-form", children: [_jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "username", className: "form-label", children: "Username" }), _jsx("input", { id: "username", name: "username", type: "text", autoComplete: "username", className: "form-control", required: true, autoFocus: true })] }), _jsxs("div", { className: "form-group", children: [_jsx("label", { htmlFor: "email", className: "form-label", children: "Email" }), _jsx("input", { id: "email", name: "email", type: "email", autoComplete: "email", className: "form-control", required: true })] }), _jsx("button", { type: "submit", id: "submit-btn", className: "btn btn-primary", style: { marginTop: '1.5rem' }, children: "Send Reset Link" }), _jsx("div", { className: "footer-links-container", children: _jsxs("a", { href: loginPath, className: "text-link", children: [_jsx("svg", { className: "arrow-icon", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg", children: _jsx("path", { d: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" }) }), "Back to login"] }) })] })] })] }) }) }), _jsxs("footer", { children: ["\u00A9 ", new Date().getFullYear(), " ", brandName, ". All rights reserved."] }), _jsx("script", { dangerouslySetInnerHTML: { __html: `
+        ` }} />
+      </head>
+      <body>
+        <div className="bg-container"></div>
+        
+        <header>
+          {logo && typeof logo === 'string' ? (
+            <div className="logo-container" dangerouslySetInnerHTML={{ __html: logo }} />
+          ) : (
+            <div className="logo-container">{logo}</div>
+          )}
+        </header>
+
+        <main>
+          <div className="login-box">
+            <div className="card" id="form-card">
+              <div id="error-alert" className="error-banner" role="alert"></div>
+
+              <div id="request-view">
+                <h1 className="form-title">Reset Password</h1>
+                <form id="reset-form">
+                  <div className="form-group">
+                    <label htmlFor="username" className="form-label">Username</label>
+                    <input id="username" name="username" type="text" autoComplete="username" className="form-control" required autoFocus />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input id="email" name="email" type="email" autoComplete="email" className="form-control" required />
+                  </div>
+
+                  <button type="submit" id="submit-btn" className="btn btn-primary" style={{ marginTop: '1.5rem' }}>Send Reset Link</button>
+                  
+                  <div className="footer-links-container">
+                    <a href={loginPath} className="text-link">
+                      <svg className="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                      </svg>
+                      Back to login
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer>
+          &copy; {new Date().getFullYear()} {brandName}. All rights reserved.
+        </footer>
+
+        <script dangerouslySetInnerHTML={{ __html: `
           (function () {
             var errorAlert = document.getElementById('error-alert');
             var form = document.getElementById('reset-form');
@@ -355,10 +437,13 @@ export const ResetPasswordPage = ({ title = 'Reset Password', brandName = 'Stitc
               });
             }
           })();
-        ` } })] })] }));
+        ` }} />
+      </body>
+    </html>
+  );
 };
-export function renderResetPasswordPage(options = {}) {
-    const markup = renderToStaticMarkup(_jsx(ResetPasswordPage, { ...options }));
-    return `<!DOCTYPE html>\n${markup}`;
+
+export function renderResetPasswordPage(options: ResetPasswordPageOptions = {}): string {
+  const markup = renderToStaticMarkup(<ResetPasswordPage {...options} />);
+  return `<!DOCTYPE html>\n${markup}`;
 }
-//# sourceMappingURL=reset-password-page.js.map

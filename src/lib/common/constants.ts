@@ -10,6 +10,7 @@ export const AUDIT_TABLE = `${SCHEMA_NAME}.${PREFIX}audit`;
 export const SAVED_SEARCH_TABLE = `${SCHEMA_NAME}.${PREFIX}saved_search`;
 export const REVOKED_TOKENS_TABLE = `${SCHEMA_NAME}.${PREFIX}revoked_tokens`;
 export const SCHEMA_MIGRATIONS_TABLE = `${SCHEMA_NAME}.${PREFIX}migrations`;
+export const APPS_TABLE = `${SCHEMA_NAME}.${PREFIX}apps`;
 
 export const DEFAULT_APP_ID = 'core';
 

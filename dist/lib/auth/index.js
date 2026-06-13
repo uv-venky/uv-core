@@ -8,4 +8,6 @@ export { getUserRoles } from './roles.service.js';
 export { assertTokenNotRevoked, cleanupExpiredRevokedTokens, logout } from './logout.service.js';
 export { hashPassword, signAccessToken, toAuthUser, verifyAccessToken, verifyPassword } from './jwt.service.js';
 export { withAuthRoute, withPublicRoute, withRoleRoute } from '../common/routes.js';
+export { checkPageAccess, getUserTeams } from './sidebar.js';
+export { renderSidebar } from '../../components/sidebar-component.js';
 //# sourceMappingURL=index.js.map
