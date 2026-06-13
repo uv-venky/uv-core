@@ -13,6 +13,10 @@ export interface CodegenPageRouteOptions extends CodegenPageOptions {
 
 type RouteHandler = (req: Request) => Promise<Response>;
 
+function isProductionEnv(): boolean {
+  return process.env.NODE_ENV === 'production';
+}
+
 export function createCodegenPageRoute(options: CodegenPageRouteOptions): RouteHandler {
   const pagePath = options.pagePath ?? '/codegen';
   const loginPagePath = options.loginPagePath ?? '/login';
@@ -21,7 +25,7 @@ export function createCodegenPageRoute(options: CodegenPageRouteOptions): RouteH
   const { serverTeams, developmentOnly, ...contentOptions } = options;
 
   const contentHtml =
-    developmentOnly && process.env.NODE_ENV !== 'development'
+    developmentOnly && isProductionEnv()
       ? `<div style="padding:2rem; font-family:'Outfit',sans-serif; font-size:1.5rem; color:var(--text-white);">Code Generator is only available in development mode.</div>`
       : renderCodegenContentHtml(contentOptions);
 
