@@ -6,4 +6,4 @@ export {
   rollbackLastMigration,
   runMigrations,
 } from './migration-runner.js';
-export type { MigrationClient, MigrationFile, MigrationRecord } from './migration-runner.js';
+export type { MigrationClient, MigrationEntryStatus, MigrationFile, MigrationRecord, MigrationRunReport, MigrationStatusEntry } from './migration-runner.js';

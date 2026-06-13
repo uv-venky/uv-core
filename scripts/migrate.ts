@@ -19,8 +19,10 @@ async function main(): Promise<void> {
   const client = await createStandaloneClient();
 
   try {
-    const count = await runMigrations(client, logger);
-    logger.info(`Applied ${count} migration(s)`);
+    const report = await runMigrations(client, logger);
+    if (report.appliedCount > 0) {
+      logger.info(`Successfully applied ${report.appliedCount} migration(s) from ${report.migrationsDir}`);
+    }
   } finally {
     await client.end();
     await closePool();

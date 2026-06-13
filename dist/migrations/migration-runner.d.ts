@@ -16,8 +16,25 @@ export interface MigrationFile {
     filePath: string;
     downFilePath: string;
 }
+export type MigrationEntryStatus = 'skipped' | 'applied' | 'failed';
+export interface MigrationStatusEntry {
+    fileName: string;
+    version: number;
+    name: string;
+    status: MigrationEntryStatus;
+    checksum: string;
+    storedChecksum?: string;
+    executionTimeMs?: number;
+}
+export interface MigrationRunReport {
+    migrationsDir: string;
+    entries: MigrationStatusEntry[];
+    appliedCount: number;
+    skippedCount: number;
+    failedCount: number;
+}
 export declare function listMigrationFiles(customDir?: string): Promise<MigrationFile[]>;
 export declare function ensureMigrationsTable(client: MigrationClient): Promise<void>;
-export declare function runMigrations(client: MigrationClient, logger: LoggerType, customDir?: string): Promise<number>;
+export declare function runMigrations(client: MigrationClient, logger: LoggerType, customDir?: string): Promise<MigrationRunReport>;
 export declare function rollbackLastMigration(client: MigrationClient, logger: LoggerType, customDir?: string): Promise<boolean>;
 //# sourceMappingURL=migration-runner.d.ts.map

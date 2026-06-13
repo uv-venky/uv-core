@@ -27,8 +27,32 @@ export interface MigrationFile {
   downFilePath: string;
 }
 
+export type MigrationEntryStatus = 'skipped' | 'applied' | 'failed';
+
+export interface MigrationStatusEntry {
+  fileName: string;
+  version: number;
+  name: string;
+  status: MigrationEntryStatus;
+  checksum: string;
+  storedChecksum?: string;
+  executionTimeMs?: number;
+}
+
+export interface MigrationRunReport {
+  migrationsDir: string;
+  entries: MigrationStatusEntry[];
+  appliedCount: number;
+  skippedCount: number;
+  failedCount: number;
+}
+
 function generateChecksum(content: string): string {
   return crypto.createHash('md5').update(content.replace(/\r\n/g, '\n'), 'utf8').digest('hex');
+}
+
+function migrationKey(version: number, name: string): string {
+  return `${version}_${name}`;
 }
 
 function resolveMigrationsDir(customDir?: string): string {
@@ -63,6 +87,43 @@ function parseMigrationFileName(fileName: string): { version: number; name: stri
   }
 
   return { version, name };
+}
+
+function logMigrationHeader(logger: LoggerType, migrationsDir: string, fileCount: number, installedCount: number): void {
+  logger.info(`Migrations directory: ${migrationsDir}`);
+  logger.info(`Found ${fileCount} migration file(s), ${installedCount} already applied in ${SCHEMA_MIGRATIONS_TABLE}`);
+}
+
+function logMigrationEntry(logger: LoggerType, entry: MigrationStatusEntry): void {
+  const label = entry.status === 'skipped' ? 'SKIP' : entry.status === 'applied' ? 'OK  ' : 'FAIL';
+
+  if (entry.status === 'skipped') {
+    logger.info(
+      `${label}  ${entry.fileName}  checksum=${entry.checksum}  verified (matches ${SCHEMA_MIGRATIONS_TABLE})`,
+    );
+    return;
+  }
+
+  if (entry.status === 'applied') {
+    logger.info(
+      `${label}  ${entry.fileName}  checksum=${entry.checksum}  applied in ${entry.executionTimeMs ?? 0}ms`,
+    );
+    return;
+  }
+
+  logger.error(
+    `${label}  ${entry.fileName}  checksum=${entry.checksum}  stored=${entry.storedChecksum ?? 'unknown'}`,
+  );
+}
+
+function logMigrationSummary(logger: LoggerType, report: MigrationRunReport): void {
+  if (report.appliedCount === 0 && report.skippedCount > 0 && report.failedCount === 0) {
+    logger.info('No new migrations to run');
+  }
+
+  logger.info(
+    `Migration summary: ${report.appliedCount} applied, ${report.skippedCount} skipped, ${report.failedCount} failed`,
+  );
 }
 
 export async function listMigrationFiles(customDir?: string): Promise<MigrationFile[]> {
@@ -111,82 +172,148 @@ async function getInstalledMigrations(client: MigrationClient): Promise<Migratio
   return result.rows;
 }
 
-async function validateInstalledChecksums(
+async function resolvePendingMigrations(
   client: MigrationClient,
   logger: LoggerType,
   customDir?: string,
-): Promise<MigrationFile[]> {
-  const pending = await listMigrationFiles(customDir);
+): Promise<{ pending: MigrationFile[]; skipped: MigrationStatusEntry[]; migrationsDir: string }> {
+  const migrationsDir = resolveMigrationsDir(customDir);
+  const files = await listMigrationFiles(customDir);
   const installed = await getInstalledMigrations(client);
-  const pendingByKey = new Map(pending.map((file) => [`${file.version}_${file.name}`, file]));
+  const installedByKey = new Map(installed.map((row) => [migrationKey(row.version, row.name), row]));
+  const skipped: MigrationStatusEntry[] = [];
+  const pending: MigrationFile[] = [];
 
-  for (const row of installed) {
-    const key = `${row.version}_${row.name}`;
-    const file = pendingByKey.get(key);
-    if (!file) {
+  logMigrationHeader(logger, migrationsDir, files.length, installed.length);
+
+  for (const file of files) {
+    const key = migrationKey(file.version, file.name);
+    const installedRow = installedByKey.get(key);
+    const content = await fs.readFile(file.filePath, 'utf-8');
+    const checksum = generateChecksum(content);
+
+    if (!installedRow) {
+      pending.push(file);
+      logger.info(`PEND  ${file.fileName}  checksum=${checksum}  pending apply`);
       continue;
     }
 
-    const content = await fs.readFile(file.filePath, 'utf-8');
-    const checksum = generateChecksum(content);
-    if (checksum !== row.checksum) {
-      const message = `Checksum mismatch for migration ${file.fileName}: ${checksum} != ${row.checksum}`;
-        if (process.env.NODE_ENV === 'development' && isEnvTruthy(process.env.IGNORE_MIGRATION_CHECKSUM_MISMATCH)) {
+    if (checksum !== installedRow.checksum) {
+      const message = `Checksum mismatch for migration ${file.fileName}: file=${checksum} stored=${installedRow.checksum}`;
+      if (process.env.NODE_ENV === 'development' && isEnvTruthy(process.env.IGNORE_MIGRATION_CHECKSUM_MISMATCH)) {
         logger.warn(`${message} (ignored because IGNORE_MIGRATION_CHECKSUM_MISMATCH=true)`);
-      } else {
-        throw new Error(message);
+        skipped.push({
+          fileName: file.fileName,
+          version: file.version,
+          name: file.name,
+          status: 'skipped',
+          checksum,
+          storedChecksum: installedRow.checksum,
+        });
+        logMigrationEntry(logger, skipped[skipped.length - 1]!);
+        continue;
       }
+
+      throw new Error(message);
     }
 
-    pendingByKey.delete(key);
+    const entry: MigrationStatusEntry = {
+      fileName: file.fileName,
+      version: file.version,
+      name: file.name,
+      status: 'skipped',
+      checksum,
+      storedChecksum: installedRow.checksum,
+      executionTimeMs: installedRow.execution_time,
+    };
+    skipped.push(entry);
+    logMigrationEntry(logger, entry);
   }
 
-  return [...pendingByKey.values()].sort((a, b) => {
-    if (a.version !== b.version) {
-      return a.version - b.version;
-    }
-    return a.name.localeCompare(b.name);
-  });
+  return { pending, skipped, migrationsDir };
 }
 
 export async function runMigrations(
   client: MigrationClient,
   logger: LoggerType,
   customDir?: string,
-): Promise<number> {
+): Promise<MigrationRunReport> {
   await ensureMigrationsTable(client);
-  const pending = await validateInstalledChecksums(client, logger, customDir);
+  const { pending, skipped, migrationsDir } = await resolvePendingMigrations(client, logger, customDir);
+  const entries: MigrationStatusEntry[] = [...skipped];
 
   if (pending.length === 0) {
-    logger.info('No new migrations to run');
-    return 0;
+    const report: MigrationRunReport = {
+      migrationsDir,
+      entries,
+      appliedCount: 0,
+      skippedCount: skipped.length,
+      failedCount: 0,
+    };
+    logMigrationSummary(logger, report);
+    return report;
   }
 
   for (const migration of pending) {
     const content = await fs.readFile(migration.filePath, 'utf-8');
+    const checksum = generateChecksum(content);
     const start = Date.now();
-    logger.info(`Running migration: ${migration.fileName}`);
+    logger.info(`RUN   ${migration.fileName}  checksum=${checksum}`);
 
     try {
       await client.query('BEGIN');
       await client.query(content);
       const duration = Date.now() - start;
-      const checksum = generateChecksum(content);
       await client.query(
         `INSERT INTO ${SCHEMA_MIGRATIONS_TABLE}(version, name, success, checksum, execution_time)
          VALUES ($1, $2, $3, $4, $5)`,
         [migration.version, migration.name, true, checksum, duration],
       );
       await client.query('COMMIT');
-      logger.info(`Migration ${migration.fileName} completed in ${duration}ms`);
+
+      const entry: MigrationStatusEntry = {
+        fileName: migration.fileName,
+        version: migration.version,
+        name: migration.name,
+        status: 'applied',
+        checksum,
+        executionTimeMs: duration,
+      };
+      entries.push(entry);
+      logMigrationEntry(logger, entry);
     } catch (error) {
       await client.query('ROLLBACK');
+      const entry: MigrationStatusEntry = {
+        fileName: migration.fileName,
+        version: migration.version,
+        name: migration.name,
+        status: 'failed',
+        checksum,
+      };
+      entries.push(entry);
+      logMigrationEntry(logger, entry);
       logger.error(`Migration ${migration.fileName} failed: ${getErrorMessage(error)}`);
+      const report: MigrationRunReport = {
+        migrationsDir,
+        entries,
+        appliedCount: entries.filter((item) => item.status === 'applied').length,
+        skippedCount: skipped.length,
+        failedCount: 1,
+      };
+      logMigrationSummary(logger, report);
       throw error;
     }
   }
 
-  return pending.length;
+  const report: MigrationRunReport = {
+    migrationsDir,
+    entries,
+    appliedCount: pending.length,
+    skippedCount: skipped.length,
+    failedCount: 0,
+  };
+  logMigrationSummary(logger, report);
+  return report;
 }
 
 export async function rollbackLastMigration(
@@ -222,7 +349,10 @@ export async function rollbackLastMigration(
     throw new Error(`Missing rollback file: ${path.basename(migration.downFilePath)}`);
   }
 
-  logger.info(`Rolling back migration: ${migration.fileName}`);
+  const downChecksum = generateChecksum(downSql);
+  logger.info(
+    `ROLL  ${migration.fileName}  stored_checksum=${last.checksum}  down_checksum=${downChecksum}`,
+  );
   const start = Date.now();
 
   try {
@@ -233,7 +363,7 @@ export async function rollbackLastMigration(
       [last.version, last.name],
     );
     await client.query('COMMIT');
-    logger.info(`Rollback completed in ${Date.now() - start}ms`);
+    logger.info(`OK    ${migration.fileName}  rolled back in ${Date.now() - start}ms`);
     return true;
   } catch (error) {
     await client.query('ROLLBACK');
