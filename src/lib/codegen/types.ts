@@ -26,6 +26,8 @@ export interface CodegenState {
   createPage: boolean;
   pageRouteName: string;
   columnOrder: string[];
+  /** Optional index suffix for multi-instance datasources */
+  index?: number;
 }
 
 export interface TemplateOption {

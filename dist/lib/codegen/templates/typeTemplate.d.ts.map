@@ -1,1 +1,1 @@
-{"version":3,"file":"typeTemplate.d.ts","sourceRoot":"","sources":["../../../../src/lib/codegen/templates/typeTemplate.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,aAAa,CAAC;AAiChD,wBAAgB,YAAY,CAAC,KAAK,EAAE,YAAY,GAAG,MAAM,CAgBxD"}
+{"version":3,"file":"typeTemplate.d.ts","sourceRoot":"","sources":["../../../../src/lib/codegen/templates/typeTemplate.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,aAAa,CAAC;AA+EhD,wBAAgB,YAAY,CAAC,KAAK,EAAE,YAAY,GAAG,MAAM,CA4CxD"}

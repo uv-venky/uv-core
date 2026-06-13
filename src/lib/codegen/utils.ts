@@ -50,7 +50,7 @@ export function getAttributeType(pgType: string, maxLength: number | null): stri
       return 'JSON';
     case 'character varying':
     case 'character':
-      return maxLength === 1 ? 'Text' : 'Text'; // Map YN to Text in uv-core
+      return maxLength === 1 ? 'YN' : 'Text';
     case 'text':
       return 'Text';
     case 'uuid':
@@ -64,10 +64,28 @@ export function getAttributeType(pgType: string, maxLength: number | null): stri
   }
 }
 
-export function getAttributes(columns: ColumnMeta[]): string {
+export function getDefaultOperatorForType(type: string): string {
+  switch (type) {
+    case 'Date':
+      return 'on';
+    case 'Number':
+      return 'eq';
+    case 'Boolean':
+      return 'istrue';
+    case 'YN':
+      return 'is';
+    case 'TF':
+      return 'is';
+    default:
+      return 'is';
+  }
+}
+
+export function getAttributes(columns: ColumnMeta[], index?: number): string {
   return columns
     .map((column) => {
       const type = getAttributeType(column.type, column.maxLength);
+      const suffix = index != null ? String(index) : '';
       const primary = column.primary ? '\n      primary: true,' : '';
       const optional = !column.nullable ? '\n      optional: false,' : '';
       const allowDecimals = column.allowDecimals ? '\n      allowDecimals: true,' : '';
@@ -77,8 +95,8 @@ export function getAttributes(columns: ColumnMeta[]): string {
       return `
     {
       ...DefaultAttribute,
-      code: '${camelCase(column.name)}',
-      name: '${startCase(column.name)}',
+      code: '${camelCase(column.name)}${suffix}',
+      name: '${startCase(column.name)}${suffix}',
       type: ${type ? `'${type}'` : `'Text' /* NOT SUPPORTED: ${column.type} */`},
       column: '${column.name}',${maxLength}${primary}${optional}${allowDecimals}${excludeTime}${defaultValue}
     }`;
