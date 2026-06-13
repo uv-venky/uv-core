@@ -1,6 +1,6 @@
 {
   "name": "uv-core",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "UV Core - reusable Node.js/TypeScript framework with PostgreSQL, JWT auth, and migrations",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,6 +29,10 @@
     "./actions": {
       "types": "./dist/lib/actions/index.d.ts",
       "import": "./dist/lib/actions/index.js"
+    },
+    "./ds": {
+      "types": "./dist/lib/ds/index.d.ts",
+      "import": "./dist/lib/ds/index.js"
     }
   },
   "files": [
