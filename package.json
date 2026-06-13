@@ -30,12 +30,13 @@
     "scripts"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json",
     "migrate": "tsx scripts/migrate.ts",
     "rollback": "tsx scripts/rollback.ts",
     "migration:create": "tsx scripts/create-migration.ts",
     "example": "tsx examples/sample-app/src/server.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
   },
   "keywords": [
     "typescript",

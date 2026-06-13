@@ -1,0 +1,1 @@
+{"version":3,"file":"migration-generator.d.ts","sourceRoot":"","sources":["../../src/migrations/migration-generator.ts"],"names":[],"mappings":"AAIA,MAAM,WAAW,sBAAsB;IACrC,IAAI,EAAE,MAAM,CAAC;IACb,aAAa,CAAC,EAAE,MAAM,CAAC;IACvB,OAAO,CAAC,EAAE,MAAM,CAAC;CAClB;AAoBD,wBAAsB,mBAAmB,CAAC,OAAO,EAAE,sBAAsB,GAAG,OAAO,CAAC,MAAM,CAAC,CAgC1F"}
