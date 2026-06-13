@@ -11,16 +11,16 @@
       "import": "./dist/index.js"
     },
     "./auth": {
-      "types": "./dist/auth/index.d.ts",
-      "import": "./dist/auth/index.js"
+      "types": "./dist/lib/auth/index.d.ts",
+      "import": "./dist/lib/auth/index.js"
     },
     "./database": {
-      "types": "./dist/database/index.d.ts",
-      "import": "./dist/database/index.js"
+      "types": "./dist/lib/database/index.d.ts",
+      "import": "./dist/lib/database/index.js"
     },
     "./migrations": {
-      "types": "./dist/migrations/index.d.ts",
-      "import": "./dist/migrations/index.js"
+      "types": "./dist/lib/migrations/index.d.ts",
+      "import": "./dist/lib/migrations/index.js"
     }
   },
   "files": [
@@ -31,9 +31,9 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "migrate": "node dist/cli/migrate.js",
-    "rollback": "node dist/cli/rollback.js",
-    "migration:create": "node dist/cli/create-migration.js",
+    "migrate": "node dist/lib/cli/migrate.js",
+    "rollback": "node dist/lib/cli/rollback.js",
+    "migration:create": "node dist/lib/cli/create-migration.js",
     "example": "tsx examples/sample-app/src/server.ts",
     "prepublishOnly": "npm run build"
   },

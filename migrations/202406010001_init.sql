@@ -1,6 +1,9 @@
 -- Migration: 202406010001_init.sql
 -- Mirrors core/migrations/20240419_init.sql with uv_ prefix (+ uv_revoked_tokens for JWT logout)
 
+CREATE SCHEMA IF NOT EXISTS sm;
+SET search_path TO sm, public;
+
 CREATE TABLE uv_users (
   user_name VARCHAR(128) NOT NULL,
   user_id INTEGER,

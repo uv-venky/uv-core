@@ -1,5 +1,7 @@
 -- Rollback: 202406010001_init.down.sql
 
+SET search_path TO sm, public;
+
 DROP INDEX IF EXISTS uv_user_roles_app_id_idx;
 DROP INDEX IF EXISTS uv_roles_app_id_idx;
 DROP INDEX IF EXISTS uv_revoked_tokens_expires_at_idx;
