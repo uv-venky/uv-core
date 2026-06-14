@@ -1,0 +1,1 @@
+{"version":3,"file":"use-chat-agent.d.ts","sourceRoot":"","sources":["../../src/hooks/use-chat-agent.ts"],"names":[],"mappings":"AAgBA,wBAAgB,mBAAmB,CAAC,KAAK,EAAE,MAAM,QAKhD;AAQD,wBAAgB,YAAY,IAAI,CAAC,MAAM,EAAE,CAAC,KAAK,EAAE,MAAM,KAAK,IAAI,CAAC,CAMhE;AAED,wBAAgB,wBAAwB,IAAI,CAAC,MAAM,GAAG,IAAI,EAAE,CAAC,iBAAiB,EAAE,MAAM,KAAK,MAAM,IAAI,CAAC,CAoBrG"}

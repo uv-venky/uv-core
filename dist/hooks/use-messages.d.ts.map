@@ -1,0 +1,1 @@
+{"version":3,"file":"use-messages.d.ts","sourceRoot":"","sources":["../../src/hooks/use-messages.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,eAAe,CAAC;AAEpD,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,kBAAkB,CAAC;AAGpD,wBAAgB,WAAW,CAAC,EAAE,MAAM,EAAE,EAAE;IAAE,MAAM,EAAE,cAAc,CAAC,WAAW,CAAC,CAAC,QAAQ,CAAC,CAAA;CAAE;;;;;;;;EAoBxF"}

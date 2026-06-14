@@ -13,10 +13,13 @@ export interface AppConfig {
   secret: string;
   jwtExpiresIn: string;
   migrationsDir: string;
+  schedulerId?: string;
   init: {
     admin: AdminConfig;
   };
+  [key: string]: any;
 }
+
 
 const parsers = {
   number: (value: string) => {

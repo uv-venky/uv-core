@@ -24,8 +24,8 @@ export function generateSmartSearchColumns(state) {
 
 'use client';
 
-import type { Column } from '@/components/core/smart-search/types';
-import { useClientSession } from '@/components/core/session-context';
+import type { Column } from '../../../components/core/smart-search/types';
+import { useClientSession } from '../../../components/core/session-context';
 import type { ${dsName} } from '@/lib/common/ds/types/${moduleCode ? `${moduleCode}/` : ''}${dsName}.js';
 import { useMemo } from 'react';
 

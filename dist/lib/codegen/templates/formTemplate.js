@@ -59,8 +59,8 @@ export function generateForm(state) {
 
 'use client';
 
-import { useCurrentRowSync } from '@/components/core/hooks/useStoreHooks';
-import { ${inputImports} } from '@/components/core/page/fields';
+import { useCurrentRowSync } from '../../../components/core/hooks/useStoreHooks';
+import { ${inputImports} } from '../../../components/core/page/fields';
 import type { ${dsName} } from '@/lib/common/ds/types/${moduleCode ? `${moduleCode}/` : ''}${dsName}.js';
 import type { Store } from 'uv-core/client';
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"use-chat-visibility.d.ts","sourceRoot":"","sources":["../../src/hooks/use-chat-visibility.ts"],"names":[],"mappings":"AAMA,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,uCAAuC,CAAC;AAK5E,wBAAgB,iBAAiB,CAAC,EAChC,MAAM,EACN,qBAAqB,GACtB,EAAE;IACD,MAAM,EAAE,MAAM,CAAC;IACf,qBAAqB,EAAE,cAAc,CAAC;CACvC;;+CAsBmD,cAAc;EAQjE"}

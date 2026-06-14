@@ -8,9 +8,11 @@ export interface AppConfig {
     secret: string;
     jwtExpiresIn: string;
     migrationsDir: string;
+    schedulerId?: string;
     init: {
         admin: AdminConfig;
     };
+    [key: string]: any;
 }
 export declare function getConfig(_name?: string): AppConfig;
 export declare function loadConfig(_name?: string): AppConfig;

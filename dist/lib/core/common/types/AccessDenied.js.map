@@ -1,0 +1,1 @@
+{"version":3,"file":"AccessDenied.js","sourceRoot":"","sources":["../../../../../src/lib/core/common/types/AccessDenied.ts"],"names":[],"mappings":"AAEA;;;;;;;;GAQG;AACH,MAAM,CAAC,MAAM,wBAAwB,GAAG;IACtC,MAAM,EAAE,QAAQ;IAChB,KAAK,EAAE,OAAO;IACd,MAAM,EAAE,QAAQ;IAChB,eAAe,EAAE,kBAAkB;IACnC,gBAAgB,EAAE,mBAAmB;IACrC,gBAAgB,EAAE,mBAAmB;IACrC,gBAAgB,EAAE,mBAAmB;CAC7B,CAAC"}

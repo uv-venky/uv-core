@@ -30,7 +30,7 @@ export function generateTableColumns(state) {
     })
         .join('');
     const editableImports = editable
-        ? `\nimport { createActionsColumn, type TableAction } from '@/components/core/table/actions-column-def';\nimport { Pencil } from 'lucide-react';`
+        ? `\nimport { createActionsColumn, type TableAction } from '../../../components/core/table/actions-column-def';\nimport { Pencil } from 'lucide-react';`
         : '';
     const editableColumn = editable
         ? `
@@ -51,8 +51,8 @@ export function generateTableColumns(state) {
 
 'use client';
 
-import { HeaderCell, DataTableCell } from '@/components/core/table';
-import { useClientSession } from '@/components/core/session-context';${editableImports}
+import { HeaderCell, DataTableCell } from '../../../components/core/table';
+import { useClientSession } from '../../../components/core/session-context';${editableImports}
 import type { ${dsName} } from '@/lib/common/ds/types/${moduleCode ? `${moduleCode}/` : ''}${dsName}.js';
 import type { Store } from 'uv-core/client';
 import type { AccessorKeyColumnDef } from '@tanstack/react-table';

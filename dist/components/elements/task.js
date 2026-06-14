@@ -1,0 +1,11 @@
+'use client';
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { ChevronDownIcon, SearchIcon } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible';
+import { cn } from '@/lib/chat/utils';
+export const TaskItemFile = ({ children, className, ...props }) => (_jsx("div", { className: cn('inline-flex items-center gap-1 rounded-md border bg-secondary px-1.5 py-0.5 text-foreground text-xs', className), ...props, children: children }));
+export const TaskItem = ({ children, className, ...props }) => (_jsx("div", { className: cn('text-muted-foreground text-sm', className), ...props, children: children }));
+export const Task = ({ defaultOpen = true, className, ...props }) => (_jsx(Collapsible, { className: cn('data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 data-[state=closed]:animate-out data-[state=open]:animate-in', className), defaultOpen: defaultOpen, ...props }));
+export const TaskTrigger = ({ children, className, label, icon, ...props }) => (_jsx(CollapsibleTrigger, { asChild: true, className: cn('group', className), ...props, children: children ?? (_jsxs("div", { className: "flex cursor-pointer items-center gap-2 text-muted-foreground hover:text-foreground", children: [icon ?? _jsx(SearchIcon, { className: "size-4" }), _jsx("p", { className: "text-sm", children: label }), _jsx(ChevronDownIcon, { className: "size-4 transition-transform group-data-[state=open]:rotate-180" })] })) }));
+export const TaskContent = ({ children, className, ...props }) => (_jsx(CollapsibleContent, { className: cn('data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-popover-foreground outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in', className), ...props, children: _jsx("div", { className: "mt-4 space-y-2 border-muted border-l-2 pl-4", children: children }) }));
+//# sourceMappingURL=task.js.map

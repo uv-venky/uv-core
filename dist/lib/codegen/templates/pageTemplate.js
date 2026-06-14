@@ -14,7 +14,7 @@ export function generatePageContent(state) {
 
 'use client';
 
-import { PageLayoutTemplate } from '@/components/core/page';
+import { PageLayoutTemplate } from '../../../components/core/page';
 import { ShoppingCart } from 'lucide-react';${editFormImport}
 import use${dsName}SmartSearchColumns from './hooks/smart-search-columns';
 import use${dsName}TableColumns from './hooks/table-columns';

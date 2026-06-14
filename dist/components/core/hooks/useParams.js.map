@@ -1,0 +1,1 @@
+{"version":3,"file":"useParams.js","sourceRoot":"","sources":["../../../../src/components/core/hooks/useParams.ts"],"names":[],"mappings":"AACA,YAAY,CAAC;AAeb,IAAI,UAAU,GAAiB,GAAG,EAAE,CAAC,CAAC,EAAE,CAAC,CAAC;AAE1C;;;GAGG;AACH,MAAM,UAAU,uBAAuB,CAAC,IAAkB;IACxD,UAAU,GAAG,IAAI,CAAC;AACpB,CAAC;AAED,MAAM,UAAU,SAAS;IACvB,OAAO,UAAU,EAAO,CAAC;AAC3B,CAAC"}
