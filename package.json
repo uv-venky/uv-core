@@ -54,11 +54,12 @@
     "scripts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json && node scripts/copy-css.js",
     "migrate": "node dist/lib/cli/migrate.js",
     "rollback": "node dist/lib/cli/rollback.js",
     "migration:create": "node dist/lib/cli/create-migration.js",
     "example": "tsx examples/sample-app/src/server.ts",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
