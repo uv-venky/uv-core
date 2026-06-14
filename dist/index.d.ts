@@ -17,7 +17,6 @@ export * from './lib/migrations/index.js';
 export * from './lib/auth/index.js';
 export * from './lib/actions/index.js';
 export * from './lib/ds/index.js';
-export * from './lib/codegen/index.js';
 export { escapeHtml } from './lib/common/utils.js';
 export type { ISODateString, ISOTimeString, ISODateTimeString } from './lib/core/common/ds/types/Base.js';
 //# sourceMappingURL=index.d.ts.map

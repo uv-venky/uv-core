@@ -1,28 +1,9 @@
-import { getBearerTokenFromRequest, readJsonBody } from '../common/http.js';
-import { withAuthRoute, withPublicRoute } from '../common/routes.js';
-import { login } from './login.service.js';
-import { logout } from './logout.service.js';
+import { withPublicRoute } from '../common/routes.js';
 import { renderLoginPage } from '../../components/login-page.js';
 import { renderResetPasswordPage } from '../../components/reset-password-page.js';
 import { renderNewPasswordPage } from '../../components/new-password-page.js';
-export function createLoginRoute() {
-    return withPublicRoute(async (req) => {
-        const body = await readJsonBody(req);
-        return Response.json(await login(body));
-    });
-}
-export function createLogoutRoute() {
-    return withAuthRoute(async (req) => {
-        const token = getBearerTokenFromRequest(req);
-        if (token) {
-            await logout(token);
-        }
-        return new Response(null, { status: 204 });
-    });
-}
-export function createProfileRoute() {
-    return withAuthRoute(async (_req, auth) => Response.json({ user: auth.user }));
-}
+import { createLoginRoute, createLogoutRoute, createProfileRoute, } from './auth.api.routes.js';
+export { createLoginRoute, createLogoutRoute, createProfileRoute } from './auth.api.routes.js';
 export function createLoginPageRoute(options = {}) {
     const html = renderLoginPage(options);
     return withPublicRoute(async () => {

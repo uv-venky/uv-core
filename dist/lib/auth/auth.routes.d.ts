@@ -13,12 +13,9 @@ export interface AuthRoutesOptions {
     newPasswordPage?: NewPasswordPageOptions | false;
 }
 type RouteHandler = (req: Request) => Promise<Response>;
-export declare function createLoginRoute(): RouteHandler;
-export declare function createLogoutRoute(): RouteHandler;
-export declare function createProfileRoute(): RouteHandler;
+export { createLoginRoute, createLogoutRoute, createProfileRoute } from './auth.api.routes.js';
 export declare function createLoginPageRoute(options?: LoginPageOptions): RouteHandler;
 export declare function createResetPasswordPageRoute(options?: ResetPasswordPageOptions): RouteHandler;
 export declare function createNewPasswordPageRoute(options?: NewPasswordPageOptions): RouteHandler;
 export declare function createAuthRoutes(options?: AuthRoutesOptions): Record<string, RouteHandler>;
-export {};
 //# sourceMappingURL=auth.routes.d.ts.map
