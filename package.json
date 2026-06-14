@@ -1,6 +1,6 @@
 {
   "name": "uv-core",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "UV Core - reusable Node.js/TypeScript framework with PostgreSQL, JWT auth, and migrations",
   "type": "module",
   "main": "./dist/index.js",
@@ -66,6 +66,7 @@
     "node": ">=24.13.0"
   },
   "dependencies": {
+    "@floating-ui/dom": "1.7.6",
     "@monaco-editor/react": "4.7.0",
     "@tanstack/react-table": "8.21.3",
     "@tiptap/extension-gapcursor": "3.20.5",
